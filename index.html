@@ -1,1 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debasish Sutradhar - Terminal Portfolio</title>
+    <style>
+        :root {
+            --background: #0a0a0a;
+            --text: #ffffff;
+            --green: #00ff00;
+            --red: #ff0000;
+            --cyan: #00ffff;
+            --yellow: #ffff00;
+            --link: #87cefa;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        #terminal-container {
+            padding: 10px;
+            overflow-y: auto;
+            height: calc(100vh - 40px); /* Full height minus input line */
+            box-sizing: border-box;
+        }
+        #terminal-container a {
+            color: var(--link);
+            text-decoration: underline;
+        }
+        #terminal-container .output-line {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        #terminal-container .prompt-line {
+            display: flex;
+        }
+        #input-line {
+            display: flex;
+            align-items: center;
+            height: 30px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+        }
+        #prompt {
+            white-space: nowrap;
+            margin-right: 8px;
+        }
+        #terminal-input {
+            flex-grow: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            padding: 0;
+            caret-color: transparent; /* Hide the default caret */
+        }
+        /* Blinking block cursor */
+        #terminal-input:focus {
+            outline: none;
+        }
+        #cursor {
+            display: inline-block;
+            width: 8px; /* Width of a character */
+            height: 1.2em;
+            background-color: var(--text);
+            animation: blink 1s step-end infinite;
+            margin-left: -8px; /* Overlay on top of where the text would be */
+            visibility: hidden;
+        }
+        #terminal-input:focus + #cursor {
+            visibility: visible;
+        }
+        @keyframes blink {
+            0%, 100% { background-color: var(--text); }
+            50% { background-color: transparent; }
+        }
+        
+        /* Modal Overlay for Bulk Add */
+        #bulk-add-overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            max-height: 500px;
+            background-color: #1a1a1a;
+            border: 2px solid var(--cyan);
+            border-radius: 8px;
+            z-index: 100;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column;
+        }
+        #bulk-add-overlay h3 {
+            margin-top: 0;
+            color: var(--cyan);
+        }
+        #bulk-add-textarea {
+            width: 100%;
+            height: calc(100% - 100px);
+            background-color: #050505;
+            color: var(--text);
+            border: 1px solid var(--cyan);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: none;
+        }
+        #bulk-add-controls {
+            margin-top: 10px;
+            text-align: right;
+        }
+        #bulk-add-controls button {
+            background-color: var(--cyan);
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        #bulk-add-controls button.cancel {
+            background-color: #555;
+            color: #fff;
+        }
+        #bulk-add-error {
+            color: var(--red);
+            font-size: 14px;
+            margin-top: 5px;
+        }
 
+        /* Color Utility Classes */
+        .text-green { color: var(--green); }
+        .text-red { color: var(--red); }
+        .text-cyan { color: var(--cyan); }
+        .text-yellow { color: var(--yellow); }
+    </style>
+</head>
+<body>
+
+    <div id="terminal-container">
+        </div>
+    
+    <div id="input-line">
+        <span id="prompt"></span>
+        <input type="text" id="terminal-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div id="cursor"></div>
+    </div>
+
+    <div id="bulk-add-overlay" style="display: none; flex-direction: column;">
+        <h3 id="bulk-add-title">Bulk Add/Edit Quiz</h3>
+        <p style="margin: 0 0 10px 0; font-size: 14px;">Paste valid JSON array below.</p>
+        <textarea id="bulk-add-textarea"></textarea>
+        <div id="bulk-add-error"></div>
+        <div id="bulk-add-controls">
+            <button id="bulk-add-cancel" class="cancel">Cancel</button>
+            <button id="bulk-add-save">Save</button>
+        </div>
+    </div>
+
+    <script>
+        const terminalContainer = document.getElementById('terminal-container');
+        const inputLine = document.getElementById('input-line');
+        const terminalInput = document.getElementById('terminal-input');
+        const promptElement = document.getElementById('prompt');
+        const bulkAddOverlay = document.getElementById('bulk-add-overlay');
+        const bulkAddTitle = document.getElementById('bulk-add-title');
+        const bulkAddTextarea = document.getElementById('bulk-add-textarea');
+        const bulkAddSave = document.getElementById('bulk-add-save');
+        const bulkAddCancel = document.getElementById('bulk-add-cancel');
+        const bulkAddError = document.getElementById('bulk-add-error');
+
+        let isAdmin = false;
+        let commandHistory = [];
+        let historyIndex = -1;
+        let currentSettings = {};
+        let currentQuizData = {};
+        let currentBulkTopic = '';
+        let inputDisabled = false; // Used for quizzes, settings, etc.
+        let commandQueue = []; // For simulations like palo-alto
+        
+        // --- State for interactive prompts (settings, quiz) ---
+        let currentMode = 'terminal'; // 'terminal', 'password', 'settings', 'quiz-topic', 'quiz-question', 'bulk-add-topic'
+        let quizState = {
+            questions: [],
+            currentQuestionIndex: 0,
+            score: 0
+        };
+        let settingsState = {
+            editing: '', // 'welcome', 'prompt'
+            buffer: []
+        };
+
+
+        // --- Default Data ---
+
+        const defaultSettings = {
+            prompt: "[guest@debasish-server ~]$ ",
+            adminPrompt: "[admin@debasish-server ~]# ",
+            welcomeMessage: "Initializing kernel... Booting dsutradhar.com OS...\nWelcome to my interactive portfolio.\nType 'help' to see a list of available commands.",
+            theme: {
+                background: "#0a0a0a",
+                text: "#ffffff",
+                green: "#00ff00",
+                red: "#ff0000",
+                cyan: "#00ffff",
+                yellow: "#ffff00",
+                link: "#87cefa"
+            }
+        };
+
+        const defaultQuizData = {
+            "Security+": [
+                { "q": "Which of these provides integrity, non-repudiation, authentication, and confidentiality?", "o": ["A. AES", "B. RSA", "C. PGP", "D. SHA-256"], "a": "C", "exp": "PGP (Pretty Good Privacy) is an email encryption program that provides all four services." },
+                { "q": "What type of attack involves the attacker inserting themselves into a conversation between two parties?", "o": ["A. Phishing", "B. Man-in-the-Middle (MITM)", "C. DDoS", "D. SQL Injection"], "a": "B", "exp": "A MITM attack intercepts and potentially alters communication between two parties who believe they are directly communicating." },
+                { "q": "Which port is used by default for secure LDAP (LDAPS)?", "o": ["A. 389", "B. 443", "C. 636", "D. 3389"], "a": "C", "exp": "LDAP uses port 389, while LDAPS (LDAP over SSL/TLS) uses port 636." }
+            ],
+            "CCNA": [
+                { "q": "Which routing protocol is a link-state protocol?", "o": ["A. EIGRP", "B. OSPF", "C. RIPv2", "D. BGP"], "a": "B", "exp": "OSPF (Open Shortest Path First) is a link-state protocol that uses Dijkstra's algorithm to find the shortest path." },
+                { "q": "What is the administrative distance of EIGRP (internal)?", "o": ["A. 90", "B. 100", "C. 110", "D. 120"], "a": "A", "exp": "Internal EIGRP has an administrative distance of 90. OSPF is 110." },
+                { "q": "Which command is used to configure a new VLAN on a Cisco switch?", "o": ["A. vlan database", "B. vlan [vlan-id]", "C. int vlan [vlan-id]", "D. switchport access vlan [vlan-id]"], "a": "B", "exp": "From global configuration mode, 'vlan [vid]' (e.g., 'vlan 10') creates the VLAN." }
+            ],
+            "Azure (AZ-900)": [
+                { "q": "Which Azure service is a fully managed NoSQL database service?", "o": ["A. Azure SQL Database", "B. Azure Synapse Analytics", "C. Azure Cosmos DB", "D. Azure Database for PostgreSQL"], "a": "C", "exp": "Azure Cosmos DB is Microsoft's globally distributed, multi-model NoSQL database service." },
+                { "q": "What is the primary Azure service for managing user identities and access?", "o": ["A. Azure Active Directory (Azure AD / Entra ID)", "B. Azure Policy", "C. Azure Firewall", "D. Azure Key Vault"], "a": "A", "exp": "Azure AD (now Microsoft Entra ID) is the core service for identity and access management (IAM)." },
+                { "q": "Which of these is a valid scope for applying an Azure Policy?", "o": ["A. Resource Group only", "B. Subscription only", "C. Management Group, Subscription, or Resource Group", "D. Virtual Machine only"], "a": "C", "exp": "Policies can be applied at the Management Group, Subscription, or Resource Group level, and they are inherited by child resources." }
+            ]
+        };
+
+        // --- Helper Functions ---
+
+        function print(htmlContent) {
+            const line = document.createElement('div');
+            line.classList.add('output-line');
+            line.innerHTML = htmlContent;
+            terminalContainer.appendChild(line);
+        }
+
+        function printPrompt(command) {
+            const line = document.createElement('div');
+            line.classList.add('prompt-line');
+            line.innerHTML = `<span class="prompt-text">${promptElement.textContent}</span><span>${command}</span>`;
+            terminalContainer.appendChild(line);
+        }
+
+        function scrollToBottom() {
+            terminalContainer.scrollTop = terminalContainer.scrollHeight;
+        }
+
+        function clearTerminal() {
+            terminalContainer.innerHTML = '';
+            print(currentSettings.welcomeMessage);
+        }
+
+        function applyTheme() {
+            const theme = currentSettings.theme;
+            const root = document.documentElement;
+            root.style.setProperty('--background', theme.background);
+            root.style.setProperty('--text', theme.text);
+            root.style.setProperty('--green', theme.green);
+            root.style.setProperty('--red', theme.red);
+            root.style.setProperty('--cyan', theme.cyan);
+            root.style.setProperty('--yellow', theme.yellow);
+            root.style.setProperty('--link', theme.link);
+        }
+
+        function updatePrompt() {
+            promptElement.textContent = isAdmin ? currentSettings.adminPrompt : currentSettings.prompt;
+        }
+
+        function disableInput() {
+            inputDisabled = true;
+            terminalInput.disabled = true;
+            inputLine.style.display = 'none';
+        }
+
+        function enableInput(mode = 'terminal') {
+            currentMode = mode;
+            inputDisabled = false;
+            terminalInput.disabled = false;
+            inputLine.style.display = 'flex';
+            terminalInput.type = 'text'; // Default to text
+            terminalInput.focus();
+        }
+
+        function showBulkAddModal() {
+            bulkAddTitle.textContent = `Bulk Add/Edit Quiz for: ${currentBulkTopic}`;
+            const currentJson = currentQuizData[currentBulkTopic] || [];
+            bulkAddTextarea.value = JSON.stringify(currentJson, null, 2);
+            bulkAddError.textContent = '';
+            bulkAddOverlay.style.display = 'flex';
+            disableInput(); // Disable terminal input
+            bulkAddTextarea.focus();
+        }
+
+        function hideBulkAddModal() {
+            bulkAddOverlay.style.display = 'none';
+            enableInput();
+        }
+
+        // --- Core Command Processor ---
+
+        function processCommand(command) {
+            printPrompt(command);
+            
+            if (command.trim() === '') {
+                scrollToBottom();
+                return;
+            }
+
+            commandHistory.push(command);
+            historyIndex = commandHistory.length;
+
+            const args = command.split(' ');
+            const cmd = args[0].toLowerCase();
+
+            switch (cmd) {
+                case 'help':
+                    printHelp();
+                    break;
+                case 'whoami':
+                    print(resume.summary);
+                    break;
+                case 'skills':
+                    print(resume.skills);
+                    break;
+                case 'exp':
+                    print(resume.experience);
+                    break;
+                case 'edu':
+                    print(resume.education);
+                    break;
+                case 'certs':
+                    print(resume.certifications);
+                    break;
+                case 'contact':
+                    print(resume.contact);
+                    break;
+                case 'palo-alto-logs':
+                    startPaloAltoSim();
+                    break;
+                case 'clear':
+                    clearTerminal();
+                    break;
+                case 'su':
+                    if (args[1] === 'admin') {
+                        print("Enter administrator password:");
+                        currentMode = 'password';
+                        terminalInput.type = 'password';
+                    } else {
+                        print(`su: user ${args[1] || ''} does not exist`);
+                    }
+                    break;
+                case 'settings':
+                    if (!isAdmin) {
+                        print(`<span class="text-red">ERROR: Insufficient permissions.</span> Type 'su admin' to log in.`);
+                    } else {
+                        startSettingsEditor();
+                    }
+                    break;
+                case 'quiz-bulk-add':
+                    if (!isAdmin) {
+                        print(`<span class="text-red">ERROR: Insufficient permissions.</span>`);
+                    } else {
+                        print(`Enter the quiz topic to add/replace (e.g., 'Security+'):`);
+                        currentMode = 'bulk-add-topic';
+                    }
+                    break;
+                case 'quiz-clear-all':
+                    if (!isAdmin) {
+                        print(`<span class="text-red">ERROR: Insufficient permissions.</span>`);
+                    } else {
+                        print(`This will erase ALL custom quizzes. Are you sure? (y/n)`);
+                        currentMode = 'confirm-quiz-clear';
+                    }
+                    break;
+                case 'run-quiz':
+                    if (!isAdmin) {
+                        print(`<span class="text-red">ERROR: Insufficient permissions.</span> Type 'su admin' to log in.`);
+                    } else {
+                        startQuiz();
+                    }
+                    break;
+                default:
+                    print(`bash: command not found: ${cmd}. Type 'help' for a list of commands.`);
+            }
+        }
+
+        // --- Interactive Mode Handlers ---
+
+        function handleInteractiveInput(input) {
+            switch (currentMode) {
+                case 'password':
+                    handlePasswordInput(input);
+                    break;
+                case 'settings':
+                    handleSettingsInput(input);
+                    break;
+                case 'settings-welcome':
+                    handleSettingsWelcomeInput(input);
+                    break;
+                case 'settings-prompt':
+                    handleSettingsPromptInput(input, 'prompt');
+                    break;
+                case 'settings-admin-prompt':
+                    handleSettingsPromptInput(input, 'adminPrompt');
+                    break;
+                case 'settings-theme':
+                    handleSettingsThemeInput(input);
+                    break;
+                case 'quiz-topic':
+                    handleQuizTopicInput(input);
+                    break;
+                case 'quiz-question':
+                    handleQuizQuestionInput(input);
+                    break;
+                case 'bulk-add-topic':
+                    currentBulkTopic = input.trim();
+                    if (currentBulkTopic) {
+                        print(`Opening bulk-add editor for '<span class="text-cyan">${currentBulkTopic}</span>'...`);
+                        showBulkAddModal();
+                    } else {
+                        enableInput();
+                    }
+                    break;
+                case 'confirm-quiz-clear':
+                    if (input.toLowerCase() === 'y') {
+                        localStorage.removeItem('customQuizData');
+                        print("Custom quizzes cleared. Reloading...");
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        print("Action cancelled.");
+                        enableInput();
+                    }
+                    break;
+            }
+        }
+
+        function handlePasswordInput(password) {
+            terminalInput.type = 'text'; // Reset input type
+            if (password === 'DebasishAdmin2024!') {
+                isAdmin = true;
+                print('<span class="text-green">Login Successful. Welcome, Admin.</span>');
+                updatePrompt();
+            } else {
+                print('<span class="text-red">Login failed. Incorrect password.</span>');
+            }
+            enableInput();
+        }
+
+        // --- Settings Panel ---
+
+        function startSettingsEditor() {
+            currentMode = 'settings';
+            print(`<span class="text-yellow">Settings Panel</span>`);
+            print(`1. Edit Welcome Message`);
+            print(`2. Edit Guest Prompt`);
+            print(`3. Edit Admin Prompt`);
+            print(`4. Edit Theme Colors`);
+            print(`5. Reset All Settings to Default`);
+            print(`Type a number (1-5) or 'exit' to leave:`);
+        }
+
+        function handleSettingsInput(input) {
+            switch (input) {
+                case '1':
+                    print("Enter new welcome message. Type 'SAVE' on a new line to finish.");
+                    settingsState.buffer = [];
+                    currentMode = 'settings-welcome';
+                    break;
+                case '2':
+                    print(`Enter new guest prompt (current: "${currentSettings.prompt}"):`);
+                    currentMode = 'settings-prompt';
+                    break;
+                case '3':
+                    print(`Enter new admin prompt (current: "${currentSettings.adminPrompt}"):`);
+                    currentMode = 'settings-admin-prompt';
+                    break;
+                case '4':
+                    print("Editing Theme. Enter a valid hex code or press Enter to skip.");
+                    settingsState.buffer = Object.keys(currentSettings.theme);
+                    settingsState.editing = 'theme';
+                    currentMode = 'settings-theme';
+                    promptNextThemeColor();
+                    break;
+                case '5':
+                    localStorage.removeItem('userSettings');
+                    print("Settings reset to default. Reloading...");
+                    disableInput();
+                    setTimeout(() => location.reload(), 1000);
+                    break;
+                case 'exit':
+                    print("Exiting settings panel.");
+                    enableInput();
+                    break;
+                default:
+                    print("Invalid option. Please enter a number from 1-5 or 'exit'.");
+            }
+        }
+
+        function handleSettingsWelcomeInput(input) {
+            if (input.toUpperCase() === 'SAVE') {
+                currentSettings.welcomeMessage = settingsState.buffer.join('\n');
+                localStorage.setItem('userSettings', JSON.stringify(currentSettings));
+                print("<span class='text-green'>Welcome message saved.</span>");
+                startSettingsEditor(); // Go back to main settings menu
+            } else {
+                settingsState.buffer.push(input);
+            }
+        }
+
+        function handleSettingsPromptInput(input, promptType) {
+            if (input.trim()) {
+                currentSettings[promptType] = input.trim() + " "; // Add trailing space
+                localStorage.setItem('userSettings', JSON.stringify(currentSettings));
+                print(`<span class='text-green'>${promptType} saved.</span>`);
+                updatePrompt(); // Update live prompt
+            } else {
+                print("Prompt cannot be empty. Action cancelled.");
+            }
+            startSettingsEditor();
+        }
+
+        function promptNextThemeColor() {
+            if (settingsState.buffer.length > 0) {
+                const key = settingsState.buffer[0];
+                print(`Enter color for <span class="text-cyan">${key}</span> (current: ${currentSettings.theme[key]}):`);
+            } else {
+                print("<span class='text-green'>Theme settings saved.</span>");
+                applyTheme(); // Apply new theme
+                startSettingsEditor();
+            }
+        }
+        
+        function handleSettingsThemeInput(input) {
+            const key = settingsState.buffer[0];
+            if (input.trim() && /^#[0-9A-Fa-f]{6}$/.test(input.trim())) {
+                currentSettings.theme[key] = input.trim();
+                localStorage.setItem('userSettings', JSON.stringify(currentSettings));
+            } else if (input.trim() === '') {
+                print(`Skipped ${key}.`);
+            } else {
+                print(`<span class="text-red">Invalid hex code. Skipped ${key}.</span>`);
+            }
+            settingsState.buffer.shift(); // Move to next color
+            promptNextThemeColor();
+        }
+
+        // --- Quiz Module ---
+
+        function startQuiz() {
+            const topics = Object.keys(currentQuizData);
+            if (topics.length === 0) {
+                print("<span class='text-red'>No quiz topics found.</span> Use 'quiz-bulk-add' to add questions.");
+                enableInput();
+                return;
+            }
+            
+            print("Starting Quiz Module...");
+            print("Select a topic:");
+            topics.forEach((topic, index) => {
+                print(`<span class='text-cyan'>${index + 1}. ${topic}</span>`);
+            });
+            print("Enter a number (1-" + topics.length + ") or 'exit':");
+            currentMode = 'quiz-topic';
+        }
+
+        function handleQuizTopicInput(input) {
+            if (input === 'exit') {
+                print("Exiting quiz module.");
+                enableInput();
+                return;
+            }
+            
+            const topics = Object.keys(currentQuizData);
+            const topicIndex = parseInt(input) - 1;
+            
+            if (topics[topicIndex]) {
+                const topicName = topics[topicIndex];
+                quizState.questions = [...currentQuizData[topicName]]; // Clone array
+                quizState.currentQuestionIndex = 0;
+                quizState.score = 0;
+                
+                if (quizState.questions.length === 0) {
+                    print(`<span class="text-red">No questions found for topic '${topicName}'.</span>`);
+                    startQuiz();
+                    return;
+                }
+                
+                print(`Starting quiz for: <span class="text-yellow">${topicName}</span>`);
+                askNextQuestion();
+            } else {
+                print("Invalid selection. Please enter a number from the list or 'exit'.");
+            }
+        }
+
+        function askNextQuestion() {
+            if (quizState.currentQuestionIndex < quizState.questions.length) {
+                const q = quizState.questions[quizState.currentQuestionIndex];
+                print(`\n<span class="text-yellow">Question ${quizState.currentQuestionIndex + 1} of ${quizState.questions.length}:</span>`);
+                print(q.q);
+                q.o.forEach(option => print(option));
+                print("Enter your answer (A, B, C, D...) or 'quit':");
+                currentMode = 'quiz-question';
+            } else {
+                // Quiz finished
+                print("\n<span class='text-green'>Quiz Complete!</span>");
+                print(`Your score: <span class="text-yellow">${quizState.score} / ${quizState.questions.length}</span>`);
+                startQuiz(); // Go back to topic selection
+            }
+        }
+
+        function handleQuizQuestionInput(input) {
+            if (input.toLowerCase() === 'quit') {
+                print("Quitting quiz.");
+                startQuiz();
+                return;
+            }
+            
+            const q = quizState.questions[quizState.currentQuestionIndex];
+            if (input.toUpperCase() === q.a.toUpperCase()) {
+                print(`<span class="text-green">Correct!</span>`);
+                quizState.score++;
+            } else {
+                print(`<span class="text-red">Incorrect.</span> The correct answer was <span class="text-yellow">${q.a}</span>.`);
+            }
+            print(`<span class="text-cyan">Explanation:</span> ${q.exp}`);
+            
+            quizState.currentQuestionIndex++;
+            askNextQuestion();
+        }
+
+
+        // --- Simulation ---
+
+        function startPaloAltoSim() {
+            disableInput();
+            commandQueue = [
+                { delay: 500, cmd: () => print(`[<span class='text-green'>ALLOW</span>] SRC=recruiter.com DST=debasish-server.com SRV=https`) },
+                { delay: 300, cmd: () => print(`[<span class='text-green'>ALLOW</span>] SRC=google-bot.com DST=debasish-server.com SRV=https`) },
+                { delay: 700, cmd: () => print(`[<span class='text-red'>DENY</span>] SRC=malicious-scanner.net DST=debasish-server.com SRV=ssh (Port 22)`) },
+                { delay: 400, cmd: () => print(`[<span class='text-green'>ALLOW</span>] SRC=hiring-manager-ip.com DST=debasish-server.com SRV=https`) },
+                { delay: 600, cmd: () => print(`[<span class='text-red'>DENY</span>] SRC=shodan.io-scanner.net DST=debasish-server.com SRV=rdp (Port 3389)`) },
+                { delay: 300, cmd: () => print(`[<span class='text-green'>ALLOW</span>] SRC=my-home-ip.com DST=debasish-server.com SRV=ssh (Admin Access)`) },
+                { delay: 800, cmd: () => print(`Simulation finished.`) },
+                { delay: 100, cmd: () => enableInput() }
+            ];
+            runNextSimCommand();
+        }
+
+        function runNextSimCommand() {
+            if (commandQueue.length > 0) {
+                const task = commandQueue.shift();
+                setTimeout(() => {
+                    task.cmd();
+                    scrollToBottom();
+                    runNextSimCommand();
+                }, task.delay);
+            }
+        }
+
+        // --- Content ---
+
+        function printHelp() {
+            const commands = {
+                "--- User Commands ---": "",
+                "whoami": "Prints my professional summary.",
+                "skills": "Lists my core competencies.",
+                "exp": "Lists my professional experience.",
+                "edu": "Lists my education.",
+                "certs": "Lists my certifications.",
+                "contact": "Shows contact information.",
+                "palo-alto-logs": "[Fun] Runs a simulation of firewall logs.",
+                "clear": "Clears the terminal screen.",
+                "--- Admin Commands ---": "",
+                "su admin": "Log in as administrator.",
+                "run-quiz": "(Admin) Access the locked certification quiz area.",
+                "settings": "(Admin) Customize terminal appearance and welcome message.",
+                "quiz-bulk-add": "(Admin) Add/replace quiz questions for a specific topic.",
+                "quiz-clear-all": "(Admin) Clear all custom quizzes and restore defaults.",
+            };
+            let helpText = "Available commands:\n";
+            for (const [cmd, desc] of Object.entries(commands)) {
+                helpText += `<span class="text-cyan">${cmd.padEnd(20)}</span> ${desc}\n`;
+            }
+            print(helpText);
+        }
+
+        const resume = {
+            summary: `
+<span class='text-yellow'>Professional Summary</span>
+-----------------------
+Senior Systems and Network Administrator with 7+ years of experience managing core infrastructure for enterprise environments. 
+Proven expertise in administering physical/virtual servers, Microsoft 365/Azure cloud services, and complex network systems (LAN/WAN, firewalls, VPNs). 
+Combines hands-on Tier 2/3 support and endpoint management with a strong foundation in cybersecurity operations, incident response, and ITIL-based change management. 
+CCNA, Security+, and Azure certified.
+            `,
+            skills: `
+<span class='text-yellow'>Core Competencies</span>
+-------------------
+<span class='text-cyan'>Infrastructure & Cloud:</span> Microsoft Azure & M365 Admin, Active Directory (GPO), DNS/DHCP, Server Admin (Physical/Virtual), Backup & Disaster Recovery, Patch Management
+<span class='text-cyan'>Network & Security:</span>   LAN/WAN Management, Firewall & VPN Config (Palo Alto), Access Control, Incident Response, Vulnerability Management, Network Monitoring, CompTIA Security+
+<span class='text-cyan'>End-User & Device:</span>    Tier 2/3 Technical Support, Endpoint Management (Microsoft Intune), ServiceNow, Workstation & Peripheral Support, A/V & Boardroom Systems
+<span class='text-cyan'>Professional:</span>         ITIL Processes, Technical Documentation, Vendor Management, User Training, System Optimization, Problem-Solving
+            `,
+            experience: `
+<span class='text-yellow'>Professional Experience</span>
+-----------------------
+<span class='text-cyan'>Tech Integration Specialist</span> | Aga Khan Academy, Dhaka (Jul 2017 - May 2024)
+  - Administered core infrastructure (virtual servers, storage, backup/DR) and managed Microsoft 365/Azure environments.
+  - Managed Active Directory (GPO, DNS, DHCP), identity systems, and enterprise data backup/disaster recovery procedures.
+  - Supported and secured LAN/WAN infrastructure, firewalls, switches, and VPNs, ensuring performance and access control.
+  - Provided advanced Tier 2/3 escalation support for 300+ users; managed endpoint deployment, peripherals, and A/V systems.
+  - Planned and executed system upgrades, patch management, and configuration changes following ITIL processes.
+  - Responded to security incidents, performed vulnerability assessments, and developed technical documentation/SOPs.
+
+<span class='text-cyan'>Web Developer</span> | Instatek Soft, Dhaka (Feb 2015 - Aug 2016)
+  - Developed secure web applications, optimized database performance, and collaborated with clients on project delivery.
+            `,
+            education: `
+<span class='text-yellow'>Education & Credentials</span>
+-------------------------
+<span class='text-cyan'>Master of Administrative Science - Computer Security & Forensic Administration</span> (2025)
+  Fairleigh Dickinson University, Vancouver, BC
+
+<span class='text-cyan'>M.Sc. Computer Science</span> (2017)
+  Jahangirnagar University, Bangladesh
+
+<span class='text-cyan'>B.Sc. Computer Science & Engineering</span> (2015)
+  National University, Bangladesh
+  
+<span class='text-cyan'>Credential Evaluation:</span> Master's Degree Equivalency (WES, Canada)
+            `,
+            certifications: `
+<span class='text-yellow'>Certifications</span>
+--------------
+- CompTIA Security+
+- Cisco Certified Network Associate (CCNA)
+- Microsoft Azure Fundamentals (AZ-900)
+- CompTIA A+
+- ISC2 Certified in Cybersecurity (CC)
+- Microsoft Azure Cloud Services
+- Google IT Support Professional
+- Certified Network Security Specialist (CNSS)
+- IBM Cybersecurity Tools
+            `,
+            contact: `
+<span class='text-yellow'>Contact Information</span>
+-------------------
+<span class='text-cyan'>Email:</span>    debasish2211@gmail.com
+<span class='text-cyan'>Phone:</span>    672-965-4350
+<span class='text-cyan'>LinkedIn:</span> <a href='https://linkedin.com/in/debasish-sutradhar' target='_blank'>linkedin.com/in/debasish-sutradhar</a>
+            `
+        };
+
+
+        // --- Event Listeners ---
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (inputDisabled) return;
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const command = terminalInput.value;
+                terminalInput.value = '';
+                
+                if (currentMode === 'terminal') {
+                    processCommand(command);
+                } else {
+                    printPrompt(terminalInput.type === 'password' ? '********' : command);
+                    handleInteractiveInput(command);
+                }
+                scrollToBottom();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentMode === 'terminal' && historyIndex > 0) {
+                    historyIndex--;
+                    terminalInput.value = commandHistory[historyIndex];
+                    terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (currentMode === 'terminal' && historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    terminalInput.value = commandHistory[historyIndex];
+                    terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
+                } else if (historyIndex === commandHistory.length - 1) {
+                    historyIndex++;
+                    terminalInput.value = '';
+                }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                // Simple autocomplete for commands
+                if (currentMode === 'terminal') {
+                    const commands = ['help', 'whoami', 'skills', 'exp', 'edu', 'certs', 'contact', 'palo-alto-logs', 'clear', 'su admin', 'run-quiz', 'settings', 'quiz-bulk-add', 'quiz-clear-all'];
+                    const partial = terminalInput.value;
+                    const match = commands.find(c => c.startsWith(partial));
+                    if (match) {
+                        terminalInput.value = match;
+                    }
+                }
+            }
+        });
+
+        // Global click listener to re-focus input
+        document.body.addEventListener('click', (e) => {
+            if (e.target.id === 'bulk-add-overlay' || bulkAddOverlay.contains(e.target)) {
+                return; // Don't focus terminal if clicking modal
+            }
+            if (inputDisabled) return;
+            terminalInput.focus();
+        });
+
+        // --- Modal Listeners ---
+
+        bulkAddSave.addEventListener('click', () => {
+            try {
+                const parsedJson = JSON.parse(bulkAddTextarea.value);
+                if (!Array.isArray(parsedJson)) {
+                    throw new Error("Input is not a JSON array.");
+                }
+                // Optional: Add validation here to check if objects have q, o, a, exp keys
+                
+                currentQuizData[currentBulkTopic] = parsedJson;
+                localStorage.setItem('customQuizData', JSON.stringify(currentQuizData));
+                
+                print(`<span class="text-green">Success! ${parsedJson.length} questions saved to '${currentBulkTopic}'.</span>`);
+                hideBulkAddModal();
+                
+            } catch (e) {
+                bulkAddError.textContent = `Invalid JSON! ${e.message}`;
+            }
+        });
+
+        bulkAddCancel.addEventListener('click', () => {
+            print("Bulk add cancelled.");
+            hideBulkAddModal();
+        });
+
+
+        // --- Initialization ---
+
+        function init() {
+            try {
+                currentSettings = JSON.parse(localStorage.getItem('userSettings')) || defaultSettings;
+                // Simple merge to add new settings if old ones are in localStorage
+                if (!currentSettings.adminPrompt) currentSettings.adminPrompt = defaultSettings.adminPrompt;
+            } catch (e) {
+                console.error("Failed to parse settings, using default.", e);
+                currentSettings = defaultSettings;
+            }
+            
+            try {
+                currentQuizData = JSON.parse(localStorage.getItem('customQuizData')) || defaultQuizData;
+            } catch (e) {
+                console.error("Failed to parse quizzes, using default.", e);
+                currentQuizData = defaultQuizData;
+            }
+            
+            applyTheme();
+            updatePrompt();
+            clearTerminal(); // This will also print the welcome message
+            enableInput();
+        }
+
+        init();
+    </script>
+</body>
+</html>
