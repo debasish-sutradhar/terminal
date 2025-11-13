@@ -3,1150 +3,1645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Interactive Portfolio</title>
-    <style>
+    <title>Debasish Sutradhar - Hybrid OS</title>
+    <!-- Font Awesome for GUI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- STYLES FOR TERMINAL (DEFAULT) -->
+    <style id="terminal-styles">
         :root {
-            --color-white: rgba(255, 255, 255, 1);
-            --color-black: rgba(0, 0, 0, 1);
-            --color-cream-50: rgba(252, 252, 249, 1);
-            --color-cream-100: rgba(255, 255, 253, 1);
-            --color-gray-200: rgba(245, 245, 245, 1);
-            --color-gray-300: rgba(167, 169, 169, 1);
-            --color-gray-400: rgba(119, 124, 124, 1);
-            --color-slate-500: rgba(98, 108, 113, 1);
-            --color-brown-600: rgba(94, 82, 64, 1);
-            --color-charcoal-700: rgba(31, 33, 33, 1);
-            --color-charcoal-800: rgba(38, 40, 40, 1);
-            --color-slate-900: rgba(19, 52, 59, 1);
-            --color-teal-300: rgba(50, 184, 198, 1);
-            --color-teal-400: rgba(45, 166, 178, 1);
-            --color-teal-500: rgba(33, 128, 141, 1);
-            --color-teal-600: rgba(29, 116, 128, 1);
-            --color-teal-700: rgba(26, 104, 115, 1);
-            --color-teal-800: rgba(41, 150, 161, 1);
-            --color-red-400: rgba(255, 84, 89, 1);
-            --color-red-500: rgba(192, 21, 47, 1);
-            --color-orange-400: rgba(230, 129, 97, 1);
-            --color-orange-500: rgba(168, 75, 47, 1);
-            --color-brown-600-rgb: 94, 82, 64;
-            --color-teal-500-rgb: 33, 128, 141;
-            --color-slate-900-rgb: 19, 52, 59;
-            --color-slate-500-rgb: 98, 108, 113;
-            --color-red-500-rgb: 192, 21, 47;
-            --color-red-400-rgb: 255, 84, 89;
-            --color-orange-500-rgb: 168, 75, 47;
-            --color-orange-400-rgb: 230, 129, 97;
-            --color-background: var(--color-charcoal-700);
-            --color-surface: var(--color-charcoal-800);
-            --color-text: var(--color-gray-200);
-            --color-text-secondary: rgba(167, 169, 169, 0.7);
-            --color-primary: var(--color-teal-300);
-            --color-primary-hover: var(--color-teal-400);
-            --color-primary-active: var(--color-teal-800);
-            --color-secondary: rgba(119, 124, 124, 0.15);
-            --color-secondary-hover: rgba(119, 124, 124, 0.25);
-            --color-secondary-active: rgba(119, 124, 124, 0.3);
-            --color-border: rgba(119, 124, 124, 0.3);
-            --color-error: var(--color-red-400);
-            --color-success: var(--color-teal-300);
-            --color-warning: var(--color-orange-400);
-            --color-info: var(--color-gray-300);
-            --color-focus-ring: rgba(50, 184, 198, 0.4);
-            --color-btn-primary-text: var(--color-slate-900);
-            --color-card-border: rgba(119, 124, 124, 0.2);
-            --color-card-border-inner: rgba(119, 124, 124, 0.15);
-            --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            --font-size-xs: 11px;
-            --font-size-sm: 12px;
-            --font-size-base: 14px;
-            --font-size-md: 14px;
-            --font-size-lg: 16px;
-            --font-size-xl: 18px;
-            --font-size-2xl: 20px;
-            --font-size-3xl: 24px;
-            --font-size-4xl: 30px;
-            --font-weight-normal: 400;
-            --font-weight-medium: 500;
-            --font-weight-semibold: 550;
-            --font-weight-bold: 600;
-            --line-height-tight: 1.2;
-            --line-height-normal: 1.5;
-            --letter-spacing-tight: -0.01em;
-            --space-0: 0;
-            --space-1: 1px;
-            --space-2: 2px;
-            --space-4: 4px;
-            --space-6: 6px;
-            --space-8: 8px;
-            --space-10: 10px;
-            --space-12: 12px;
-            --space-16: 16px;
-            --space-20: 20px;
-            --space-24: 24px;
-            --space-32: 32px;
-            --radius-sm: 6px;
-            --radius-base: 8px;
-            --radius-md: 10px;
-            --radius-lg: 12px;
-            --radius-full: 9999px;
-            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-            --duration-fast: 150ms;
-            --duration-normal: 250ms;
-            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-            --neon-green: #00FF00;
-            --neon-cyan: #00FFFF;
-            --neon-pink: #FF00FF;
-            --neon-yellow: #fdd33c;
-            --neon-red: #FF0000;
+            /* Shared colors - will be updated by JS */
+            --background: #0a0a0a;
+            --text: #ffffff;
+            --green: #00ff00;
+            --red: #ff0000;
+            --cyan: #00ffff;
+            --yellow: #ffff00;
+            --link: #87cefa;
         }
-
-        * {
+        
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: var(--background);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
         }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            font-family: var(--font-family-base);
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            color: var(--color-text);
-            line-height: var(--line-height-normal);
-            overflow-x: hidden;
-        }
-
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: var(--space-20) var(--space-32);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: var(--font-size-2xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: var(--space-32);
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--color-text);
-            text-decoration: none;
-            font-weight: var(--font-weight-medium);
-            transition: all var(--duration-normal) var(--ease-standard);
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--neon-cyan);
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        /* Hero Section */
-        #hero {
-            min-height: 100vh;
+        
+        #terminal-main {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding: var(--space-32);
-        }
-
-        #particles-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
             height: 100%;
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: var(--font-weight-bold);
-            color: var(--neon-cyan);
-            text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
-            margin-bottom: var(--space-24);
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .typing-text {
-            font-size: 1.5rem;
-            color: var(--neon-green);
-            text-shadow: 0 0 10px var(--neon-green);
-            margin-bottom: var(--space-32);
-            min-height: 2rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: var(--space-16) var(--space-32);
-            background: transparent;
-            border: 2px solid var(--neon-pink);
-            color: var(--neon-pink);
-            text-decoration: none;
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-            border-radius: var(--radius-base);
-            transition: all var(--duration-normal) var(--ease-standard);
-            cursor: pointer;
-            animation: pulse 2s infinite;
-        }
-
-        .cta-button:hover {
-            background: var(--neon-pink);
-            color: #0a0a0a;
-            box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
-            transform: scale(1.05);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 10px var(--neon-pink);
-            }
-            50% {
-                box-shadow: 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
-            }
-        }
-
-        /* Section Styles */
-        section {
-            padding: 100px var(--space-32);
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: var(--font-weight-bold);
-            color: var(--neon-cyan);
-            text-shadow: 0 0 15px var(--neon-cyan);
-            margin-bottom: var(--space-32);
-            text-align: center;
-        }
-
-        /* About Section */
-        #about {
-            background: rgba(26, 26, 46, 0.5);
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-32);
-            margin-top: var(--space-32);
-        }
-
-        .bio {
-            font-size: var(--font-size-lg);
-            line-height: 1.8;
-            color: var(--color-text-secondary);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-16);
-        }
-
-        .skill-card {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: var(--radius-base);
-            padding: var(--space-16);
-            text-align: center;
-            transition: all var(--duration-normal) var(--ease-standard);
-            cursor: pointer;
-        }
-
-        .skill-card:hover {
-            background: rgba(0, 255, 255, 0.2);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-            transform: translateY(-5px);
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: var(--space-24);
-            margin-top: var(--space-32);
-        }
-
-        .project-card {
-            background: rgba(26, 26, 46, 0.8);
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            border-radius: var(--radius-lg);
-            padding: var(--space-24);
-            transition: all var(--duration-normal) var(--ease-standard);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
-            transition: left 0.5s;
         }
 
-        .project-card:hover::before {
-            left: 100%;
+        #terminal-container {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
-
-        .project-card:hover {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
-            transform: translateY(-10px);
+        #terminal-container a {
+            color: var(--link);
+            text-decoration: underline;
         }
-
-        .project-title {
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--neon-green);
-            margin-bottom: var(--space-12);
+        #terminal-container .output-line {
+            white-space: pre-wrap;
+            word-break: break-all;
         }
-
-        .project-description {
-            color: var(--color-text-secondary);
-            margin-bottom: var(--space-16);
-            line-height: 1.6;
-        }
-
-        .tech-tags {
+        #terminal-container .prompt-line {
             display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-8);
         }
-
-        .tech-tag {
-            background: rgba(255, 0, 255, 0.2);
-            border: 1px solid var(--neon-pink);
-            color: var(--neon-pink);
-            padding: var(--space-4) var(--space-12);
-            border-radius: var(--radius-full);
-            font-size: var(--font-size-sm);
+        #input-line {
+            display: flex;
+            align-items: center;
+            height: 30px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            flex-shrink: 0;
         }
-
-        /* Games Section */
-        #games {
-            background: rgba(10, 10, 10, 0.8);
+        #prompt {
+            white-space: nowrap;
+            margin-right: 8px;
         }
-
-        .games-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-24);
-            margin-bottom: var(--space-32);
+        #terminal-input {
+            flex-grow: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            padding: 0;
+            caret-color: transparent; /* Hide the default caret */
         }
-
-        .game-selector {
-            background: rgba(26, 26, 46, 0.8);
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            border-radius: var(--radius-lg);
-            padding: var(--space-24);
-            text-align: center;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-standard);
+        #cursor {
+            display: inline-block;
+            width: 8px; /* Width of a character */
+            height: 1.2em;
+            background-color: var(--text);
+            animation: blink 1s step-end infinite;
+            margin-left: -8px; /* Overlay on top of where the text would be */
+            visibility: hidden;
         }
-
-        .game-selector:hover {
-            border-color: var(--neon-yellow);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-            transform: translateY(-5px);
+        #terminal-input:focus + #cursor {
+            visibility: visible;
         }
-
-        .game-selector h3 {
-            color: var(--neon-yellow);
-            font-size: var(--font-size-2xl);
-            margin-bottom: var(--space-12);
+        @keyframes blink {
+            0%, 100% { background-color: var(--text); }
+            50% { background-color: transparent; }
         }
-
-        .game-modal {
+        
+        /* Modal Overlay for Terminal Bulk Add */
+        #bulk-add-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: var(--space-32);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            max-height: 500px;
+            background-color: #1a1a1a;
+            border: 2px solid var(--cyan);
+            border-radius: 8px;
+            z-index: 2000; /* Must be above terminal */
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column;
+            font-family: 'Courier New', Courier, monospace; /* Ensure font */
         }
-
-        .game-modal.active {
-            display: flex;
+        #bulk-add-overlay h3 {
+            margin-top: 0;
+            color: var(--cyan);
         }
-
-        .game-content {
-            background: rgba(26, 26, 46, 0.95);
-            border: 2px solid var(--neon-cyan);
-            border-radius: var(--radius-lg);
-            padding: var(--space-32);
-            max-width: 800px;
+        #bulk-add-textarea {
             width: 100%;
-            position: relative;
+            height: calc(100% - 100px);
+            background-color: #050505;
+            color: var(--text);
+            border: 1px solid var(--cyan);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: none;
+        }
+        #bulk-add-controls {
+            margin-top: 10px;
+            text-align: right;
+        }
+        #bulk-add-controls button {
+            background-color: var(--cyan);
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        #bulk-add-controls button.cancel {
+            background-color: #555;
+            color: #fff;
+        }
+        #bulk-add-error {
+            color: var(--red);
+            font-size: 14px;
+            margin-top: 5px;
         }
 
-        .close-game {
-            position: absolute;
-            top: var(--space-16);
-            right: var(--space-16);
-            background: transparent;
-            border: none;
-            color: var(--neon-red);
-            font-size: 2rem;
+        /* Color Utility Classes */
+        .text-green { color: var(--green); }
+        .text-red { color: var(--red); }
+        .text-cyan { color: var(--cyan); }
+        .text-yellow { color: var(--yellow); }
+    </style>
+    
+    <!-- STYLES FOR GUI (WEB OS) -->
+    <style id="gui-styles">
+        /* --- NEW: GUI Animations --- */
+        @keyframes guiScaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes guiSlideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* These styles are prefixed with #gui-container to avoid conflict */
+        #gui-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            /* Background image is now set by JS */
+            background: #000 no-repeat center center fixed;
+            background-size: cover;
+            line-height: 1.4; 
+        }
+
+        /* --- GUI Desktop --- */
+        #gui-container #desktop {
+            height: 100%;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 20px;
+        }
+        #gui-container .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px; /* Standardized icon size */
+            text-align: center;
             cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.2s ease;
+        }
+        #gui-container .desktop-icon:hover, .desktop-icon:focus {
+            background: rgba(255, 255, 255, 0.2);
+            outline: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        #gui-container .desktop-icon i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        #gui-container .desktop-icon span {
+            font-size: 12px;
+            text-shadow: 1px 1px 2px #000;
+            word-wrap: break-word;
+            width: 100%;
+        }
+
+        /* --- GUI Taskbar & Start Menu --- */
+        #gui-container #taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+        #gui-container #start-button {
             width: 40px;
             height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all var(--duration-normal);
-        }
-
-        .close-game:hover {
-            background: rgba(255, 0, 0, 0.2);
-            transform: rotate(90deg);
-        }
-
-        .game-header {
-            text-align: center;
-            margin-bottom: var(--space-24);
-        }
-
-        .game-header h2 {
-            color: var(--neon-yellow);
-            font-size: var(--font-size-3xl);
-            margin-bottom: var(--space-12);
-        }
-
-        .game-controls {
-            display: flex;
-            justify-content: center;
-            gap: var(--space-16);
-            margin-bottom: var(--space-24);
-        }
-
-        .game-btn {
-            padding: var(--space-12) var(--space-24);
-            background: transparent;
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-bold);
-            border-radius: var(--radius-base);
+            background: var(--cyan);
+            color: #000;
+            border: none;
+            font-size: 20px;
             cursor: pointer;
-            transition: all var(--duration-normal);
+            transition: background 0.2s ease;
         }
-
-        .game-btn:hover {
-            background: var(--neon-green);
-            color: #0a0a0a;
-            box-shadow: 0 0 20px var(--neon-green);
+        #gui-container #start-button:hover {
+            background: var(--link);
         }
-
-        .game-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        #gui-container #start-menu {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            left: 0;
+            width: 250px;
+            height: 300px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: none;
+            border-top-right-radius: 5px;
+            z-index: 999;
+            padding: 5px;
+            box-sizing: border-box;
+            overflow-y: auto; 
+            animation: guiSlideInUp 0.2s ease-out;
         }
-
-        /* Snake Game */
-        #snake-canvas {
-            border: 2px solid var(--neon-green);
-            background: #0a0a0a;
-            display: block;
-            margin: 0 auto var(--space-24);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        #gui-container #start-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-
-        .game-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: var(--space-24);
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-label {
-            color: var(--color-text-secondary);
-            font-size: var(--font-size-sm);
-            display: block;
-            margin-bottom: var(--space-4);
-        }
-
-        .stat-value {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        /* Memory Game */
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-12);
-            max-width: 500px;
-            margin: 0 auto var(--space-24);
-        }
-
-        .memory-card {
-            aspect-ratio: 1;
-            background: rgba(26, 26, 46, 0.8);
-            border: 2px solid var(--neon-cyan);
-            border-radius: var(--radius-base);
+        #gui-container #start-menu li {
+            padding: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            transition: all var(--duration-normal);
-            position: relative;
+            gap: 10px;
+            border-radius: 4px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        #gui-container #start-menu li:hover {
+            background-color: var(--cyan);
+            color: #000;
+        }
+        #gui-container #start-menu li.shutdown:hover {
+            background-color: var(--red);
+            color: #fff;
         }
 
-        .memory-card.flipped {
-            background: rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        .memory-card.matched {
-            background: rgba(0, 255, 0, 0.2);
-            border-color: var(--neon-green);
-            cursor: default;
-        }
-
-        .memory-card:not(.flipped):not(.matched):hover {
-            background: rgba(0, 255, 255, 0.1);
-            transform: scale(1.05);
-        }
-
-        /* Typing Game */
-        .typing-container {
-            text-align: center;
-        }
-
-        .typing-text-display {
-            background: rgba(26, 26, 46, 0.8);
-            border: 2px solid var(--neon-yellow);
-            border-radius: var(--radius-base);
-            padding: var(--space-24);
-            margin-bottom: var(--space-24);
-            font-size: var(--font-size-2xl);
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--neon-yellow);
-            font-family: var(--font-family-mono);
-        }
-
-        .typing-input {
-            width: 100%;
-            padding: var(--space-16);
-            font-size: var(--font-size-xl);
-            background: rgba(26, 26, 46, 0.8);
-            border: 2px solid var(--neon-cyan);
-            border-radius: var(--radius-base);
-            color: var(--color-text);
-            font-family: var(--font-family-mono);
-            margin-bottom: var(--space-24);
-        }
-
-        .typing-input:focus {
-            outline: none;
-            border-color: var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-        }
-
-        .typing-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-16);
-            margin-bottom: var(--space-24);
-        }
-
-        /* Contact Section */
-        #contact {
-            background: rgba(26, 26, 46, 0.5);
-        }
-
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-32);
-            margin-top: var(--space-32);
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-16);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            color: var(--neon-cyan);
-            font-weight: var(--font-weight-medium);
-            margin-bottom: var(--space-8);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            padding: var(--space-12);
-            background: rgba(26, 26, 46, 0.8);
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            border-radius: var(--radius-base);
-            color: var(--color-text);
-            font-family: var(--font-family-base);
-            font-size: var(--font-size-base);
-            transition: all var(--duration-normal);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-        }
-
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            padding: var(--space-16) var(--space-32);
-            background: transparent;
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-bold);
-            border-radius: var(--radius-base);
-            cursor: pointer;
-            transition: all var(--duration-normal);
-        }
-
-        .submit-btn:hover {
-            background: var(--neon-green);
-            color: #0a0a0a;
-            box-shadow: 0 0 20px var(--neon-green);
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-24);
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: var(--space-16);
-            padding: var(--space-16);
-            background: rgba(26, 26, 46, 0.8);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: var(--radius-base);
-            transition: all var(--duration-normal);
-        }
-
-        .contact-item:hover {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-        }
-
-        .contact-item a {
-            color: var(--neon-cyan);
-            text-decoration: none;
-        }
-
-        /* Success Message */
-        .success-message {
-            position: fixed;
-            top: 100px;
-            right: var(--space-32);
-            background: rgba(0, 255, 0, 0.2);
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            padding: var(--space-16) var(--space-24);
-            border-radius: var(--radius-base);
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
-            z-index: 3000;
-            opacity: 0;
-            transform: translateX(400px);
-            transition: all var(--duration-normal);
-        }
-
-        .success-message.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Achievements */
-        .achievements {
-            position: fixed;
-            bottom: var(--space-32);
-            right: var(--space-32);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-8);
-            z-index: 1500;
-        }
-
-        .achievement {
-            background: rgba(26, 26, 46, 0.95);
-            border: 2px solid var(--neon-yellow);
-            color: var(--neon-yellow);
-            padding: var(--space-12) var(--space-16);
-            border-radius: var(--radius-base);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            opacity: 0;
-            transform: translateX(400px);
-            animation: slideInAchievement 0.5s forwards;
-        }
-
-        @keyframes slideInAchievement {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Fun Mode Toggle */
-        .fun-mode-toggle {
-            position: fixed;
-            bottom: var(--space-32);
-            left: var(--space-32);
-            z-index: 1500;
-            background: rgba(26, 26, 46, 0.95);
-            border: 2px solid var(--neon-pink);
-            color: var(--neon-pink);
-            padding: var(--space-12) var(--space-16);
-            border-radius: var(--radius-base);
-            cursor: pointer;
-            transition: all var(--duration-normal);
-        }
-
-        .fun-mode-toggle:hover {
-            background: rgba(255, 0, 255, 0.2);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .typing-text {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .about-content,
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                gap: var(--space-16);
-                display: none;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .games-container {
-                grid-template-columns: 1fr;
-            }
-
-            .achievements,
-            .fun-mode-toggle {
-                display: none;
-            }
-        }
-
-        /* Loading Animation */
-        .loader {
-            position: fixed;
+        /* --- GUI Window Management --- */
+        #gui-container #window-container {
+            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: #0a0a0a;
+            width: 100%;
+            height: calc(100% - 40px); /* Full height minus taskbar */
+            overflow: hidden;
+            pointer-events: none; /* Allow clicking desktop icons */
+        }
+        #gui-container .window {
+            position: absolute;
+            top: 100px;
+            left: 150px;
+            width: 600px;
+            height: 400px;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            resize: both;
+            overflow: hidden;
+            min-width: 200px;
+            min-height: 150px;
+            pointer-events: all; /* Windows are clickable */
+            animation: guiScaleIn 0.2s ease-out;
+        }
+        #gui-container .window-title-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--cyan);
+            display: flex;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
+            justify-content: space-between;
+            cursor: move;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        #gui-container .window-title {
+            padding-left: 10px;
+            font-weight: bold;
+        }
+        #gui-container .window-controls {
+            display: flex;
+        }
+        #gui-container .window-controls button {
+            width: 30px;
+            height: 30px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        #gui-container .window-controls button:hover {
+            background: #555;
+        }
+        #gui-container .window-controls button.close:hover {
+            background: var(--red);
+        }
+        #gui-container .window-content {
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        /* Specific App Content */
+        #gui-container .log-line {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        /* --- NEW: GUI Admin Panel --- */
+        #gui-container .admin-panel-content {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            padding: 0;
+            background: #1e1e1e; /* Solid background for admin panel */
+        }
+        #gui-container .ap-tabs {
+            display: flex;
+            background: #333;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--cyan);
+        }
+        #gui-container .ap-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: #333;
+            border-right: 1px solid #444;
+            color: #ccc;
+        }
+        #gui-container .ap-tab.active {
+            background: #1e1e1e;
+            color: var(--cyan);
+            border-bottom: 1px solid #1e1e1e;
+        }
+        #gui-container .ap-content {
+            display: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        #gui-container .ap-content.active {
+            display: block;
+        }
+        #gui-container .ap-content label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: var(--cyan);
+            font-weight: bold;
+        }
+        #gui-container .ap-content textarea, #gui-container .ap-content input[type="text"] {
+            width: calc(100% - 16px);
+            background: #2b2b2b;
+            color: var(--text);
+            border: 1px solid #555;
+            padding: 8px;
+            font-family: inherit;
+            border-radius: 4px;
+        }
+        #gui-container .ap-content textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #gui-container .ap-content button.save {
+            background-color: var(--green);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            border-radius: 5px;
+            transition: background 0.2s ease;
+        }
+        #gui-container .ap-content button.save:hover {
+            background-color: #aaf2aa;
+        }
+        #gui-container #ap-quiz-topic-select {
+            padding: 8px;
+            background: #2b2b2b;
+            color: var(--text);
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+        #gui-container #ap-quiz-json-editor {
+            font-family: 'Courier New', Courier, monospace;
+            height: 200px;
+        }
+        #gui-container .theme-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+        #gui-container .theme-grid label {
+            margin: 0;
+            font-weight: normal;
+            color: var(--text);
+        }
+        #gui-container .theme-grid input[type="color"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 50px;
+            height: 30px;
+            background-color: transparent;
+            border: 1px solid #555;
+            cursor: pointer;
+        }
+        #gui-container .theme-grid input[type="color"]::-webkit-color-swatch {
+            border-radius: 4px;
+            border: none;
+        }
+        #gui-container .theme-grid input[type="color"]::-moz-color-swatch {
+            border-radius: 4px;
+            border: none;
         }
 
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
+        /* --- GUI Quiz App --- */
+        #gui-container .quiz-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-
-        .loader-text {
-            font-size: 2rem;
-            color: var(--neon-cyan);
-            text-shadow: 0 0 20px var(--neon-cyan);
-            animation: pulse 1s infinite;
+        #gui-container #quiz-topic-select {
+            padding: 8px;
+            background: #2b2b2b;
+            color: var(--text);
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+        #gui-container .quiz-question-area {
+            display: none;
+        }
+        #gui-container .quiz-question-text {
+            font-weight: bold;
+            color: var(--cyan);
+            margin-bottom: 10px;
+        }
+        #gui-container .quiz-option {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        #gui-container .quiz-option:hover {
+            background: #444;
+        }
+        #gui-container .quiz-option input {
+            margin-right: 10px;
+        }
+        #gui-container .quiz-controls button {
+            background-color: var(--cyan);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #gui-container .quiz-result {
+            font-size: 16px;
+        }
+        
+        /* --- GUI Terminal App Placeholder --- */
+        #gui-container .window-content.terminal-app-placeholder {
+            padding: 15px;
+            background: var(--background);
+            font-family: 'Courier New', Courier, monospace;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loader" id="loader">
-        <div class="loader-text">Loading...</div>
-    </div>
 
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">YN</div>
-            <ul class="nav-links">
-                <li><a href="#hero" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#games" class="nav-link">Games</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="hero">
-        <canvas id="particles-canvas"></canvas>
-        <div class="hero-content">
-            <h1 class="hero-title">Your Name</h1>
-            <div class="typing-text" id="typing-text"></div>
-            <a href="#games" class="cta-button">Play a Game</a>
+    <!-- 1. TERMINAL INTERFACE (DEFAULT) -->
+    <div id="terminal-main">
+        <div id="terminal-container">
+            <!-- Terminal output lines will be appended here -->
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-content">
-            <div class="bio">
-                <p>I'm a passionate developer who loves building interactive web experiences. With expertise in cloud technologies, automation, and full-stack development, I create solutions that are both functional and delightful to use.</p>
-                <p style="margin-top: var(--space-16);">My journey in tech has been driven by curiosity and a love for problem-solving. I believe in creating experiences that not only work well but also bring joy to users.</p>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-card">JavaScript / TypeScript</div>
-                <div class="skill-card">HTML5 &amp; CSS3</div>
-                <div class="skill-card">React / Node.js</div>
-                <div class="skill-card">Cloud Computing (Azure)</div>
-                <div class="skill-card">Automation &amp; DevOps</div>
-                <div class="skill-card">Web Development</div>
-                <div class="skill-card">Problem Solving</div>
-                <div class="skill-card">Game Development</div>
-            </div>
+        
+        <div id="input-line">
+            <span id="prompt"></span>
+            <input type="text" id="terminal-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            <div id="cursor"></div>
         </div>
-    </section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2 class="section-title">My Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3 class="project-title">Cloud Infrastructure Dashboard</h3>
-                <p class="project-description">Built a comprehensive dashboard for managing Azure resources with real-time monitoring.</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">Azure</span>
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">TypeScript</span>
-                    <span class="tech-tag">Docker</span>
-                </div>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">Job Application Automator</h3>
-                <p class="project-description">Developed an automation tool that streamlines the job application process.</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">n8n</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">APIs</span>
-                </div>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">Interactive Portfolio</h3>
-                <p class="project-description">Created this interactive portfolio website with integrated mini-games.</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">HTML5</span>
-                    <span class="tech-tag">CSS3</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">Canvas API</span>
-                </div>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">Full-Stack E-Commerce Platform</h3>
-                <p class="project-description">Built a complete e-commerce solution with payment integration and admin panel.</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">Express</span>
-                    <span class="tech-tag">MongoDB</span>
-                    <span class="tech-tag">Stripe</span>
-                </div>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">Real-Time Chat Application</h3>
-                <p class="project-description">Developed a WebSocket-based chat app with rooms and user authentication.</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">Socket.io</span>
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">Redis</span>
-                </div>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">Data Visualization Dashboard</h3>
-                <p class="project-description">Created interactive data visualizations for business analytics.</p>
-                <div class="tech-tags">
-                    <span class="tech-tag">D3.js</span>
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">FastAPI</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Games Section -->
-    <section id="games">
-        <h2 class="section-title">Mini Games</h2>
-        <div class="games-container">
-            <div class="game-selector" onclick="openGame('snake')">
-                <h3>🐍 Snake Game</h3>
-                <p>Classic snake game with modern styling. Use arrow keys to control!</p>
-            </div>
-            <div class="game-selector" onclick="openGame('memory')">
-                <h3>🧠 Memory Match</h3>
-                <p>Test your memory by matching pairs of cards!</p>
-            </div>
-            <div class="game-selector" onclick="openGame('typing')">
-                <h3>⌨️ Type Speed Test</h3>
-                <p>Test your typing speed with tech-related phrases!</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact-container">
-            <form class="contact-form" id="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span>📧</span>
-                    <a href="mailto:your.email@example.com">your.email@example.com</a>
-                </div>
-                <div class="contact-item">
-                    <span>💼</span>
-                    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-                </div>
-                <div class="contact-item">
-                    <span>🔗</span>
-                    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
-                </div>
-                <div class="contact-item">
-                    <span>🐦</span>
-                    <a href="https://twitter.com/yourusername" target="_blank">Twitter</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Game Modals -->
-    <!-- Snake Game Modal -->
-    <div class="game-modal" id="snake-modal">
-        <div class="game-content">
-            <button class="close-game" onclick="closeGame('snake')">×</button>
-            <div class="game-header">
-                <h2>🐍 Snake Game</h2>
-                <p>Use arrow keys to control the snake. Eat the red food to grow!</p>
-            </div>
-            <div class="game-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Score</span>
-                    <span class="stat-value" id="snake-score">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">High Score</span>
-                    <span class="stat-value" id="snake-high-score">0</span>
-                </div>
-            </div>
-            <canvas id="snake-canvas" width="400" height="400"></canvas>
-            <div class="game-controls">
-                <button class="game-btn" id="snake-start-btn" onclick="startSnakeGame()">Start</button>
-                <button class="game-btn" id="snake-restart-btn" onclick="restartSnakeGame()" style="display: none;">Restart</button>
+        <!-- Terminal Bulk Add Modal -->
+        <div id="bulk-add-overlay" style="display: none; flex-direction: column;">
+            <h3 id="bulk-add-title">Bulk Add/Edit Quiz</h3>
+            <p style="margin: 0 0 10px 0; font-size: 14px;">Paste valid JSON array below.</p>
+            <textarea id="bulk-add-textarea"></textarea>
+            <div id="bulk-add-error"></div>
+            <div id="bulk-add-controls">
+                <button id="bulk-add-cancel" class="cancel">Cancel</button>
+                <button id="bulk-add-save">Save</button>
             </div>
         </div>
     </div>
+    
+    <!-- 2. GUI INTERFACE (HIDDEN BY DEFAULT) -->
+    <div id="gui-container" style="display: none;">
+        <!-- GUI Desktop -->
+        <div id="desktop">
+            <!-- These will be created by JS -->
+        </div>
 
-    <!-- Memory Game Modal -->
-    <div class="game-modal" id="memory-modal">
-        <div class="game-content">
-            <button class="close-game" onclick="closeGame('memory')">×</button>
-            <div class="game-header">
-                <h2>🧠 Memory Match</h2>
-                <p>Click cards to flip them. Match all pairs!</p>
-            </div>
-            <div class="game-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Moves</span>
-                    <span class="stat-value" id="memory-moves">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Matches</span>
-                    <span class="stat-value" id="memory-matches">0/8</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Time</span>
-                    <span class="stat-value" id="memory-time">0s</span>
-                </div>
-            </div>
-            <div class="memory-grid" id="memory-grid"></div>
-            <div class="game-controls">
-                <button class="game-btn" onclick="startMemoryGame()">Start</button>
-                <button class="game-btn" onclick="restartMemoryGame()">Restart</button>
-            </div>
+        <!-- GUI Window Container -->
+        <div id="window-container">
+            <!-- Windows will be appended here -->
+        </div>
+
+        <!-- GUI Taskbar & Start Menu -->
+        <div id="taskbar">
+            <button id="start-button"><i class="fa-solid fa-bars"></i></button>
+        </div>
+        <div id="start-menu" style="display: none;">
+            <!-- Menu items will be created by JS -->
         </div>
     </div>
+    
+    <!-- 
+    ====================================================================
+    SCRIPT BLOCK 1: TERMINAL & SHARED DATA
+    ====================================================================
+    -->
+    <script id="terminal-script">
+        // --- Globals (Shared) ---
+        let isAdmin = false; // This is the master admin state
+        let userProfile = {};
+        let quizData = {};
+        let hybridSettings = {}; // NEW: Unified settings object
 
-    <!-- Typing Game Modal -->
-    <div class="game-modal" id="typing-modal">
-        <div class="game-content">
-            <button class="close-game" onclick="closeGame('typing')">×</button>
-            <div class="game-header">
-                <h2>⌨️ Type Speed Test</h2>
-                <p>Type the text below as fast and accurately as you can!</p>
-            </div>
-            <div class="typing-stats">
-                <div class="stat-item">
-                    <span class="stat-label">WPM</span>
-                    <span class="stat-value" id="typing-wpm">0</span>
+        // --- Terminal-specific DOM Elements ---
+        const terminalMain = document.getElementById('terminal-main');
+        const terminalContainer = document.getElementById('terminal-container');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalPromptEl = document.getElementById('prompt');
+        const terminalBulkAddOverlay = document.getElementById('bulk-add-overlay');
+        const terminalBulkAddTitle = document.getElementById('bulk-add-title');
+        const terminalBulkAddTextarea = document.getElementById('bulk-add-textarea');
+        const terminalBulkAddSave = document.getElementById('bulk-add-save');
+        const terminalBulkAddCancel = document.getElementById('bulk-add-cancel');
+        const terminalBulkAddError = document.getElementById('bulk-add-error');
+
+        // --- Terminal-specific State ---
+        let terminalCommandHistory = [];
+        let terminalHistoryIndex = -1;
+        let terminalInputDisabled = false;
+        let terminalCurrentMode = 'terminal'; // 'terminal', 'password', 'quiz-topic', 'quiz-question', ...
+        let terminalQuizState = { questions: [], currentQuestionIndex: 0, score: 0 };
+        let terminalCurrentBulkTopic = '';
+        
+        // --- Shared Default Data ---
+        const defaultProfile = {
+            summary: `
+<span class='text-yellow'>Professional Summary</span>
+-----------------------
+Senior Systems and Network Administrator with 7+ years of experience managing core infrastructure for enterprise environments. 
+Proven expertise in administering physical/virtual servers, Microsoft 365/Azure cloud services, and complex network systems (LAN/WAN, firewalls, VPNs). 
+Combines hands-on Tier 2/3 support and endpoint management with a strong foundation in cybersecurity operations, incident response, and ITIL-based change management. 
+CCNA, Security+, and Azure certified.
+            `.trim(),
+            skills: `
+<span class='text-yellow'>Core Competencies</span>
+-------------------
+<span class='text-cyan'>Infrastructure & Cloud:</span> Microsoft Azure & M365 Admin, Active Directory (GPO), DNS/DHCP, Server Admin (Physical/Virtual), Backup & Disaster Recovery, Patch Management
+<span class='text-cyan'>Network & Security:</span>   LAN/WAN Management, Firewall & VPN Config (Palo Alto), Access Control, Incident Response, Vulnerability Management, Network Monitoring, CompTIA Security+
+<span class='text-cyan'>End-User & Device:</span>    Tier 2/3 Technical Support, Endpoint Management (Microsoft Intune), ServiceNow, Workstation & Peripheral Support, A/V & Boardroom Systems
+<span class='text-cyan'>Professional:</span>         ITIL Processes, Technical Documentation, Vendor Management, User Training, System Optimization, Problem-Solving
+            `.trim(),
+            experience: `
+<span class='text-yellow'>Professional Experience</span>
+-----------------------
+<span class='text-cyan'>Tech Integration Specialist</span> | Aga Khan Academy, Dhaka (Jul 2017 - May 2024)
+  - Administered core infrastructure (virtual servers, storage, backup/DR) and managed Microsoft 365/Azure environments.
+  - Managed Active Directory (GPO, DNS, DHCP), identity systems, and enterprise data backup/disaster recovery procedures.
+  - Supported and secured LAN/WAN infrastructure, firewalls, switches, and VPNs, ensuring performance and access control.
+  - Provided advanced Tier 2/3 escalation support for 300+ users; managed endpoint deployment, peripherals, and A/V systems.
+  - Planned and executed system upgrades, patch management, and configuration changes following ITIL processes.
+  - Responded to security incidents, performed vulnerability assessments, and developed technical documentation/SOPs.
+
+<span class='text-cyan'>Web Developer</span> | Instatek Soft, Dhaka (Feb 2015 - Aug 2016)
+  - Developed secure web applications, optimized database performance, and collaborated with clients on project delivery.
+            `.trim(),
+            education: `
+<span class='text-yellow'>Education & Credentials</span>
+-------------------------
+<span class='text-cyan'>Master of Administrative Science - Computer Security & Forensic Administration</span> (2025)
+  Fairleigh Dickinson University, Vancouver, BC
+
+<span class='text-cyan'>M.Sc. Computer Science</span> (2017)
+  Jahangirnagar University, Bangladesh
+
+<span class='text-cyan'>B.Sc. Computer Science & Engineering</span> (2015)
+  National University, Bangladesh
+  
+<span class='text-cyan'>Credential Evaluation:</span> Master's Degree Equivalency (WES, Canada)
+            `.trim(),
+            certifications: `
+<span class='text-yellow'>Certifications</span>
+--------------
+- CompTIA Security+
+- Cisco Certified Network Associate (CCNA)
+- Microsoft Azure Fundamentals (AZ-900)
+- CompTIA A+
+- ISC2 Certified in Cybersecurity (CC)
+- Microsoft Azure Cloud Services
+- Google IT Support Professional
+- Certified Network Security Specialist (CNSS)
+- IBM Cybersecurity Tools
+            `.trim(),
+            contact: `
+<span class='text-yellow'>Contact Information</span>
+-------------------
+<span class='text-cyan'>Email:</span>    debasish2211@gmail.com
+<span class='text-cyan'>Phone:</span>    672-965-4350
+<span class='text-cyan'>LinkedIn:</span> <a href='httpsg://www.linkedin.com/in/debasish-sutradhar' target='_blank'>linkedin.com/in/debasish-sutradhar</a>
+            `.trim()
+        };
+        const defaultQuizData = {
+            "Security+": [
+                { "q": "Which of these provides integrity, non-repudiation, authentication, and confidentiality?", "o": ["A. AES", "B. RSA", "C. PGP", "D. SHA-256"], "a": "C", "exp": "PGP (Pretty Good Privacy) is an email encryption program that provides all four services." },
+                { "q": "What type of attack involves the attacker inserting themselves into a conversation between two parties?", "o": ["A. Phishing", "B. Man-in-the-Middle (MITM)", "C. DDoS", "D. SQL Injection"], "a": "B", "exp": "A MITM attack intercepts and potentially alters communication between two parties who believe they are directly communicating." },
+                { "q": "Which port is used by default for secure LDAP (LDAPS)?", "o": ["A. 389", "B. 443", "C. 636", "D. 3389"], "a": "C", "exp": "LDAP uses port 389, while LDAPS (LDAP over SSL/TLS) uses port 636." }
+            ],
+            "CCNA": [
+                { "q": "Which routing protocol is a link-state protocol?", "o": ["A. EIGRP", "B. OSPF", "C. RIPv2", "D. BGP"], "a": "B", "exp": "OSPF (Open Shortest Path First) is a link-state protocol that uses Dijkstra's algorithm to find the shortest path." },
+                { "q": "What is the administrative distance of EIGRP (internal)?", "o": ["A. 90", "B. 100", "C. 110", "D. 120"], "a": "A", "exp": "Internal EIGRP has an administrative distance of 90. OSPF is 110." },
+                { "q": "Which command is used to configure a new VLAN on a Cisco switch?", "o": ["A. vlan database", "B. vlan [vlan-id]", "C. int vlan [vlan-id]", "D. switchport access vlan [vlan-id]"], "a": "B", "exp": "From global configuration mode, 'vlan [vid]' (e.g., 'vlan 10') creates the VLAN." }
+            ],
+            "Azure (AZ-900)": [
+                { "q": "Which Azure service is a fully managed NoSQL database service?", "o": ["A. Azure SQL Database", "B. Azure Synapse Analytics", "C. Azure Cosmos DB", "D. Azure Database for PostgreSQL"], "a": "C", "exp": "Azure Cosmos DB is Microsoft's globally distributed, multi-model NoSQL database service." },
+                { "q": "What is the primary Azure service for managing user identities and access?", "o": ["A. Azure Active Directory (Azure AD / Entra ID)", "B. Azure Policy", "C. Azure Firewall", "D. Azure Key Vault"], "a": "A", "exp": "Azure AD (now Microsoft Entra ID) is the core service for identity and access management (IAM)." },
+                { "q": "Which of these is a valid scope for applying an Azure Policy?", "o": ["A. Resource Group only", "B. Subscription only", "C. Management Group, Subscription, or Resource Group", "D. Virtual Machine only"], "a": "C", "exp": "Policies can be applied at the Management Group, Subscription, or Resource Group level, and they are inherited by child resources." }
+            ]
+        };
+        // NEW: Unified Default Settings
+        const defaultHybridSettings = { 
+            prompt: "[guest@debasish-server ~]$ ",
+            adminPrompt: "[admin@debasish-server ~]# ",
+            welcomeMessage: "Initializing kernel... Booting dsutradhar.com (Hybrid OS)...\nWelcome to my interactive portfolio.\nType 'help' to see a list of available commands.\nType 'gui' to launch the graphical desktop.",
+            theme: {
+                background: "#0a0a0a",
+                text: "#ffffff",
+                green: "#00ff00",
+                red: "#ff0000",
+                cyan: "#00ffff",
+                yellow: "#ffff00",
+                link: "#87cefa",
+                desktopBg: "https://placehold.co/1920x1080/000033/333366?text=Cyber+Desktop"
+            }
+        };
+
+        // --- Terminal Helper Functions ---
+        function termPrint(htmlContent) {
+            const line = document.createElement('div');
+            line.classList.add('output-line');
+            line.innerHTML = htmlContent;
+            terminalContainer.appendChild(line);
+        }
+        function termPrintPrompt(command) {
+            const line = document.createElement('div');
+            line.classList.add('prompt-line');
+            line.innerHTML = `<span class="prompt-text">${terminalPromptEl.textContent}</span><span>${command}</span>`;
+            terminalContainer.appendChild(line);
+        }
+        function termScrollToBottom() {
+            terminalContainer.scrollTop = terminalContainer.scrollHeight;
+        }
+        function termClear() {
+            terminalContainer.innerHTML = '';
+            termPrint(hybridSettings.welcomeMessage);
+        }
+        function termUpdatePrompt() {
+            terminalPromptEl.textContent = isAdmin ? hybridSettings.adminPrompt : hybridSettings.prompt;
+        }
+        function termDisableInput() {
+            terminalInputDisabled = true;
+            terminalInput.disabled = true;
+        }
+        function termEnableInput(mode = 'terminal') {
+            terminalCurrentMode = mode;
+            terminalInputDisabled = false;
+            terminalInput.disabled = false;
+            terminalInput.type = (mode === 'password') ? 'password' : 'text';
+            terminalInput.focus();
+        }
+        function termShowBulkAddModal() {
+            terminalCurrentBulkTopic = prompt("Enter the quiz topic to add/replace (e.g., 'Security+'):");
+            if (!terminalCurrentBulkTopic) return;
+            
+            terminalBulkAddTitle.textContent = `Bulk Add/Edit Quiz for: ${terminalCurrentBulkTopic}`;
+            const currentJson = quizData[terminalCurrentBulkTopic] || [];
+            terminalBulkAddTextarea.value = JSON.stringify(currentJson, null, 2);
+            terminalBulkAddError.textContent = '';
+            terminalBulkAddOverlay.style.display = 'flex';
+            termDisableInput();
+            terminalBulkAddTextarea.focus();
+        }
+        function termHideBulkAddModal() {
+            terminalBulkAddOverlay.style.display = 'none';
+            termEnableInput();
+        }
+        
+        // --- NEW: Unified Theme Applicator ---
+        function applyTheme(settings) {
+            const root = document.documentElement;
+            const theme = settings.theme;
+            root.style.setProperty('--background', theme.background);
+            root.style.setProperty('--text', theme.text);
+            root.style.setProperty('--green', theme.green);
+            root.style.setProperty('--red', theme.red);
+            root.style.setProperty('--cyan', theme.cyan);
+            root.style.setProperty('--yellow', theme.yellow);
+            root.style.setProperty('--link', theme.link);
+            
+            // Apply to GUI container (which might be hidden)
+            const gui = document.getElementById('gui-container');
+            if (gui) {
+                gui.style.backgroundImage = `url('${theme.desktopBg}')`;
+            }
+        }
+
+        // --- Terminal Command Processor ---
+        function processTerminalCommand(command) {
+            termPrintPrompt(command);
+            if (command.trim() === '') {
+                termScrollToBottom();
+                return;
+            }
+            terminalCommandHistory.push(command);
+            terminalHistoryIndex = terminalCommandHistory.length;
+            
+            const args = command.split(' ');
+            const cmd = args[0].toLowerCase();
+
+            switch (cmd) {
+                case 'help':
+                    termPrintHelp();
+                    break;
+                case 'whoami':
+                    termPrint(userProfile.summary);
+                    break;
+                case 'skills':
+                    termPrint(userProfile.skills);
+                    break;
+                case 'exp':
+                    termPrint(userProfile.experience);
+                    break;
+                case 'edu':
+                    termPrint(userProfile.education);
+                    break;
+                case 'certs':
+                    termPrint(userProfile.certifications);
+                    break;
+                case 'contact':
+                    termPrint(userProfile.contact);
+                    break;
+                case 'clear':
+                    termClear();
+                    break;
+                case 'gui':
+                case 'startx':
+                    termPrint("Launching graphical user interface...");
+                    startGui();
+                    break;
+                case 'su':
+                    if (args[1] === 'admin') {
+                        termPrint("Enter administrator password:");
+                        terminalCurrentMode = 'password';
+                    } else {
+                        termPrint(`su: user ${args[1] || ''} does not exist`);
+                    }
+                    break;
+                // --- Admin Commands ---
+                case 'settings': // This command is now REMOVED
+                    termPrint(`<span class="text-yellow">Notice:</span> Text-based settings are deprecated.`);
+                    termPrint(`Please use the graphical 'Admin Panel' in the GUI.`);
+                    termPrint(`Type 'gui' to launch.`);
+                    break;
+                case 'run-quiz':
+                case 'quiz-bulk-add':
+                case 'quiz-clear-all':
+                    if (!isAdmin) {
+                        termPrint(`<span class="text-red">ERROR: Insufficient permissions.</span> Type 'su admin' to log in.`);
+                    } else {
+                        // Admin commands
+                        switch (cmd) {
+                            case 'run-quiz':
+                                startTerminalQuiz();
+                                break;
+                            case 'quiz-bulk-add':
+                                // This now just launches the modal
+                                termShowBulkAddModal();
+                                break;
+                            case 'quiz-clear-all':
+                                termPrint(`This will erase ALL custom quizzes. Are you sure? (y/n)`);
+                                terminalCurrentMode = 'confirm-quiz-clear';
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    termPrint(`bash: command not found: ${cmd}. Type 'help' for a list of commands.`);
+            }
+            termScrollToBottom();
+        }
+
+        function termPrintHelp() {
+            const commands = {
+                "--- User Commands ---": "",
+                "gui": "Launch the full graphical desktop (Web OS).",
+                "whoami": "Prints my professional summary.",
+                "skills": "Lists my core competencies.",
+                "exp": "Lists my professional experience.",
+                "edu": "Lists my education.",
+                "certs": "Lists my certifications.",
+                "contact": "Shows contact information.",
+                "clear": "Clears the terminal screen.",
+                "--- Admin Commands ---": "",
+                "su admin": "Log in as administrator.",
+                "run-quiz": "(Admin) Access the CLI certification quiz.",
+                "quiz-bulk-add": "(Admin) Open the bulk quiz import modal.",
+                "quiz-clear-all": "(Admin) Clear all custom quizzes.",
+                "settings": "(Deprecated) Use the 'Admin Panel' in the GUI.",
+            };
+            let helpText = "Available commands:\n";
+            for (const [cmd, desc] of Object.entries(commands)) {
+                helpText += `<span class="text-cyan">${cmd.padEnd(20)}</span> ${desc}\n`;
+            }
+            termPrint(helpText);
+        }
+
+        // --- Terminal Interactive Handlers ---
+        function handleTerminalInput(input) {
+            termPrintPrompt(terminalInput.type === 'password' ? '********' : input);
+
+            switch (terminalCurrentMode) {
+                case 'password':
+                    if (input === 'DebasishAdmin2024!') {
+                        isAdmin = true;
+                        termPrint('<span class="text-green">Login Successful. Welcome, Admin.</span>');
+                        termUpdatePrompt();
+                    } else {
+                        termPrint('<span class="text-red">Login failed. Incorrect password.</span>');
+                    }
+                    termEnableInput();
+                    break;
+                
+                case 'confirm-quiz-clear':
+                    if (input.toLowerCase() === 'y') {
+                        localStorage.removeItem('customQuizData');
+                        quizData = { ...defaultQuizData }; // Reload defaults
+                        termPrint("Custom quizzes cleared and restored to defaults.");
+                    } else {
+                        termPrint("Action cancelled.");
+                    }
+                    termEnableInput();
+                    break;
+                
+                case 'quiz-topic':
+                    handleTerminalQuizTopicInput(input);
+                    break;
+                
+                case 'quiz-question':
+                    handleTerminalQuizQuestionInput(input);
+                    break;
+            }
+            termScrollToBottom();
+        }
+        
+        // --- Terminal Quiz Logic (SYNCED) ---
+        function startTerminalQuiz() {
+            const topics = Object.keys(quizData).filter(t => quizData[t].length > 0);
+            if (topics.length === 0) {
+                termPrint("<span class='text-red'>No quiz topics found.</span> Use 'quiz-bulk-add' (CLI) or 'Admin Panel' (GUI).");
+                termEnableInput();
+                return;
+            }
+            termPrint("Starting Quiz Module...");
+            termPrint("Select a topic:");
+            topics.forEach((topic, index) => {
+                termPrint(`<span class='text-cyan'>${index + 1}. ${topic}</span>`);
+            });
+            termPrint("Enter a number (1-" + topics.length + ") or 'exit':");
+            terminalCurrentMode = 'quiz-topic';
+        }
+
+        function handleTerminalQuizTopicInput(input) {
+            if (input === 'exit') {
+                termPrint("Exiting quiz module.");
+                termEnableInput();
+                return;
+            }
+            const topics = Object.keys(quizData).filter(t => quizData[t].length > 0);
+            const topicIndex = parseInt(input) - 1;
+            
+            if (topics[topicIndex]) {
+                const topicName = topics[topicIndex];
+                terminalQuizState.questions = [...quizData[topicName]];
+                terminalQuizState.currentQuestionIndex = 0;
+                terminalQuizState.score = 0;
+                termPrint(`Starting quiz for: <span class="text-yellow">${topicName}</span>`);
+                askTerminalQuestion();
+            } else {
+                termPrint("Invalid selection.");
+            }
+        }
+        
+        function askTerminalQuestion() {
+            if (terminalQuizState.currentQuestionIndex < terminalQuizState.questions.length) {
+                const q = terminalQuizState.questions[terminalQuizState.currentQuestionIndex];
+                termPrint(`\n<span class="text-yellow">Question ${terminalQuizState.currentQuestionIndex + 1} of ${terminalQuizState.questions.length}:</span>`);
+                termPrint(q.q);
+                q.o.forEach(option => termPrint(option));
+                termPrint("Enter your answer (A, B, C, D...) or 'quit':");
+                terminalCurrentMode = 'quiz-question';
+            } else {
+                termPrint("\n<span class='text-green'>Quiz Complete!</span>");
+                termPrint(`Your score: <span class="text-yellow">${terminalQuizState.score} / ${terminalQuizState.questions.length}</span>`);
+                startTerminalQuiz(); // Go back to topic selection
+            }
+        }
+        
+        function handleTerminalQuizQuestionInput(input) {
+            if (input.toLowerCase() === 'quit') {
+                termPrint("Quitting quiz.");
+                startTerminalQuiz();
+                return;
+            }
+            const q = terminalQuizState.questions[terminalQuizState.currentQuestionIndex];
+            if (input.toUpperCase() === q.a.toUpperCase()) {
+                termPrint(`<span class="text-green">Correct!</span>`);
+                terminalQuizState.score++;
+            } else {
+                termPrint(`<span class="text-red">Incorrect.</span> The correct answer was <span class="text-yellow">${q.a}</span>.`);
+            }
+            termPrint(`<span class="text-cyan">Explanation:</span> ${q.exp}`);
+            
+            terminalQuizState.currentQuestionIndex++;
+            askTerminalQuestion();
+        }
+
+        // --- Terminal Event Listeners ---
+        terminalInput.addEventListener('keydown', (e) => {
+            if (terminalInputDisabled) return;
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const command = terminalInput.value;
+                terminalInput.value = '';
+                if (terminalCurrentMode === 'terminal') {
+                    processTerminalCommand(command);
+                } else {
+                    handleTerminalInput(command);
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (terminalCurrentMode === 'terminal' && terminalHistoryIndex > 0) {
+                    terminalHistoryIndex--;
+                    terminalInput.value = terminalCommandHistory[terminalHistoryIndex];
+                    terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (terminalCurrentMode === 'terminal' && terminalHistoryIndex < terminalCommandHistory.length - 1) {
+                    terminalHistoryIndex++;
+                    terminalInput.value = terminalCommandHistory[terminalHistoryIndex];
+                    terminalInput.setSelectionRange(terminalInput.value.length, terminalInput.value.length);
+                } else if (terminalHistoryIndex === terminalCommandHistory.length - 1) {
+                    terminalHistoryIndex++;
+                    terminalInput.value = '';
+                }
+            }
+        });
+        
+        document.body.addEventListener('click', (e) => {
+            // Re-focus terminal input if clicking outside modal
+            if (e.target.id === 'terminal-main' || terminalContainer.contains(e.target)) {
+                if (!terminalInputDisabled) {
+                    terminalInput.focus();
+                }
+            }
+        });
+
+        // --- Terminal Bulk Add Modal Listeners ---
+        terminalBulkAddSave.addEventListener('click', () => {
+            try {
+                const parsedJson = JSON.parse(terminalBulkAddTextarea.value);
+                if (!Array.isArray(parsedJson)) {
+                    throw new Error("Input is not a JSON array.");
+                }
+                quizData[terminalCurrentBulkTopic] = parsedJson;
+                localStorage.setItem('customQuizData', JSON.stringify(quizData));
+                termPrint(`<span class="text-green">Success! ${parsedJson.length} questions saved to '${terminalCurrentBulkTopic}'.</span>`);
+                termHideBulkAddModal();
+            } catch (e) {
+                terminalBulkAddError.textContent = `Invalid JSON! ${e.message}`;
+            }
+        });
+        terminalBulkAddCancel.addEventListener('click', () => {
+            termPrint("Bulk add cancelled.");
+            termHideBulkAddModal();
+        });
+
+        // --- HYBRID OS BRIDGE FUNCTIONS ---
+        const guiContainer = document.getElementById('gui-container');
+        
+        function startGui() {
+            termDisableInput();
+            terminalMain.style.display = 'none';
+            guiContainer.style.display = 'block';
+            
+            // Call the GUI's init function, passing the admin state
+            // This function is defined in the *next* script block
+            initGuiDesktop(isAdmin); 
+        }
+        
+        function exitGui() {
+            // This function is called by the GUI
+            guiContainer.style.display = 'none';
+            // Clear all windows from GUI
+            const guiWindowContainer = document.querySelector('#gui-container #window-container');
+            if (guiWindowContainer) guiWindowContainer.innerHTML = '';
+            
+            terminalMain.style.display = 'flex';
+            termEnableInput();
+            termPrint("...GUI session terminated. Returned to shell.");
+            termScrollToBottom();
+        }
+
+        // --- TERMINAL INITIALIZATION ---
+        function initTerminal() {
+            // Load shared data
+            try {
+                userProfile = JSON.parse(localStorage.getItem('userProfile')) || defaultProfile;
+            } catch (e) { userProfile = defaultProfile; }
+            
+            try {
+                quizData = JSON.parse(localStorage.getItem('customQuizData')) || defaultQuizData;
+            } catch (e) { quizData = defaultQuizData; }
+            
+            // Load unified settings
+            try {
+                hybridSettings = JSON.parse(localStorage.getItem('hybridSettings')) || defaultHybridSettings;
+                // Merge to add new settings if old ones are in localStorage
+                if (!hybridSettings.theme) hybridSettings.theme = defaultHybridSettings.theme;
+                if (!hybridSettings.theme.desktopBg) hybridSettings.theme.desktopBg = defaultHybridSettings.theme.desktopBg;
+            } catch (e) { 
+                hybridSettings = defaultHybridSettings; 
+            }
+            
+            applyTheme(hybridSettings);
+            termUpdatePrompt();
+            termClear();
+            termEnableInput();
+        }
+
+        initTerminal();
+    </script>
+    
+    <!-- 
+    ====================================================================
+    SCRIPT BLOCK 2: GUI (WEB OS)
+    ====================================================================
+    -->
+    <script id="gui-script">
+        { // Use a block to scope GUI variables
+        
+        // --- GUI-specific Globals ---
+        let guiHighestZ = 10;
+        let guiWindowCount = 0;
+        let guiIsAdmin = false; // GUI's local copy of admin state
+
+        // --- GUI App Definitions ---
+        // Note: 'userProfile' and 'quizData' are global
+        const guiApps = [
+            { id: 'profile', title: 'My_Profile.txt', icon: 'fa-solid fa-file-lines', content: () => userProfile.summary, adminOnly: false },
+            { id: 'skills', title: 'Skills_Monitor.exe', icon: 'fa-solid fa-chart-simple', content: () => userProfile.skills, adminOnly: false },
+            { id: 'exp', title: 'Work_History.folder', icon: 'fa-solid fa-folder-open', content: () => userProfile.experience, adminOnly: false },
+            { id: 'edu', title: 'Education.txt', icon: 'fa-solid fa-graduation-cap', content: () => userProfile.education, adminOnly: false },
+            { id: 'certs', title: 'Certs_Vault.exe', icon: 'fa-solid fa-shield-halved', content: () => userProfile.certifications, adminOnly: false },
+            { id: 'contact', title: 'Contact_Card.vcf', icon: 'fa-solid fa-address-book', content: () => userProfile.contact, adminOnly: false },
+            { id: 'palo-alto', title: 'Palo_Alto_Monitor.exe', icon: 'fa-solid fa-network-wired', content: getGuiPaloAltoContent, adminOnly: false },
+            { id: 'terminal', title: 'Terminal.app', icon: 'fa-solid fa-terminal', content: getGuiTerminalContent, adminOnly: false },
+            // Admin Apps
+            { id: 'admin-panel', title: 'Admin Panel', icon: 'fa-solid fa-gears', content: getGuiAdminPanelContent, adminOnly: true },
+            { id: 'quiz', title: 'Certification_Quiz.exe', icon: 'fa-solid fa-circle-question', content: getGuiQuizContent, adminOnly: true },
+            // NEW Shutdown app
+            { id: 'shutdown', title: 'Exit to Terminal', icon: 'fa-solid fa-power-off', content: () => { exitGui(); return ""; }, adminOnly: false, isAction: true, isShutdown: true }
+        ];
+
+        // --- GUI DOM Elements ---
+        // We must re-get these elements, scoped to the gui-container
+        const guiDesktop = document.querySelector('#gui-container #desktop');
+        const guiStartMenu = document.querySelector('#gui-container #start-menu');
+        const guiStartButton = document.querySelector('#gui-container #start-button');
+        const guiWindowContainer = document.querySelector('#gui-container #window-container');
+
+        // --- GUI Init Function (Called by Terminal) ---
+        function initGuiDesktop(isAdminStatus) {
+            guiIsAdmin = isAdminStatus; // Set admin status from terminal
+            
+            // Data and Theme are already loaded by initTerminal()
+            
+            // Populate Desktop and Start Menu
+            populateGuiDesktop();
+            
+            // Attach GUI-specific listeners
+            guiStartButton.addEventListener('click', () => toggleGuiStartMenu());
+            guiDesktop.addEventListener('click', (e) => {
+                if (e.target === guiDesktop) {
+                    toggleGuiStartMenu(false)
+                }
+            });
+        }
+        
+        // Make this function global for the other script
+        window.initGuiDesktop = initGuiDesktop;
+
+        // --- GUI Desktop & Start Menu Population ---
+        function populateGuiDesktop() {
+            guiDesktop.innerHTML = '';
+            guiStartMenu.innerHTML = ''; // Clear previous items
+            const startMenuUl = guiStartMenu.appendChild(document.createElement('ul'));
+            
+            guiApps.forEach(app => {
+                if (app.adminOnly && !guiIsAdmin) return; // Skip admin apps
+
+                // 1. Create Desktop Icon
+                const icon = document.createElement('div');
+                icon.className = 'desktop-icon';
+                icon.tabIndex = 0;
+                icon.innerHTML = `<i class="${app.icon}"></i><span>${app.title}</span>`;
+                icon.addEventListener('click', () => launchGuiApp(app.id));
+                icon.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') launchGuiApp(app.id);
+                });
+                guiDesktop.appendChild(icon);
+                
+                // 2. Create Start Menu Item
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="${app.icon}"></i><span>${app.title}</span>`;
+                if (app.isShutdown) {
+                    li.classList.add('shutdown');
+                }
+                li.addEventListener('click', () => {
+                    launchGuiApp(app.id);
+                    toggleGuiStartMenu(false);
+                });
+                startMenuUl.appendChild(li);
+            });
+        }
+        
+        function toggleGuiStartMenu(forceShow) {
+            const display = window.getComputedStyle(guiStartMenu).display;
+            if (forceShow === true || (forceShow !== false && display === 'none')) {
+                guiStartMenu.style.display = 'block';
+            } else {
+                guiStartMenu.style.display = 'none';
+            }
+        }
+
+        // --- GUI Window Manager ---
+        function launchGuiApp(appId) {
+            const app = guiApps.find(a => a.id === appId);
+            if (!app) return;
+            
+            if (app.isAction) {
+                app.content();
+                return;
+            }
+            
+            guiWindowCount++;
+            const windowEl = document.createElement('div');
+            windowEl.className = 'window';
+            windowEl.style.zIndex = ++guiHighestZ;
+            windowEl.style.top = (50 + (guiWindowCount * 20) % 200) + 'px';
+            windowEl.style.left = (100 + (guiWindowCount * 20) % 300) + 'px';
+
+            windowEl.innerHTML = `
+                <div class="window-title-bar">
+                    <span class="window-title"><i class="${app.icon}"></i> ${app.title}</span>
+                    <div class="window-controls">
+                        <button class="minimize" title="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                        <button class="maximize" title="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                        <button class="close" title="Close"><i class="fa-solid fa-times"></i></button>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">Accuracy</span>
-                    <span class="stat-value" id="typing-accuracy">100%</span>
+                <div class="window-content" id="content-${app.id}-${guiWindowCount}">
+                    <!-- Content will be injected here -->
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">Time</span>
-                    <span class="stat-value" id="typing-time">60s</span>
+            `;
+            
+            guiWindowContainer.appendChild(windowEl);
+            
+            windowEl.addEventListener('mousedown', () => {
+                windowEl.style.zIndex = ++guiHighestZ;
+            });
+            
+            windowEl.querySelector('.close').addEventListener('click', () => windowEl.remove());
+            
+            makeGuiDraggable(windowEl, windowEl.querySelector('.window-title-bar'));
+            
+            const contentEl = windowEl.querySelector('.window-content');
+            // This is the correct way to call the content function
+            app.content(contentEl); 
+        }
+
+        function makeGuiDraggable(el, handle) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            handle.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                el.style.zIndex = ++guiHighestZ;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                el.style.top = (el.offsetTop - pos2) + "px";
+                el.style.left = (el.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+        
+        // --- GUI App-Specific Content Functions ---
+        
+        function getGuiPaloAltoContent(contentEl) {
+            contentEl.innerHTML = 'Starting log stream...<br>';
+            let interval = setInterval(() => {
+                if (!contentEl.closest('.window')) {
+                    clearInterval(interval);
+                    return;
+                }
+                const isAllow = Math.random() > 0.3;
+                const src = `src=${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.1.1`;
+                const srv = isAllow ? 'https' : (Math.random() > 0.5 ? 'ssh' : 'rdp');
+                const color = isAllow ? 'var(--green)' : 'var(--red)';
+                const action = isAllow ? 'ALLOW' : 'DENY';
+                contentEl.innerHTML += `<div class="log-line" style="color: ${color};">[${action}] ${src} dst=debasish-server srv=${srv}</div>`;
+                contentEl.scrollTop = contentEl.scrollHeight;
+            }, 1000);
+        }
+        
+        // --- NEW: Master Admin Panel ---
+        function getGuiAdminPanelContent(contentEl) {
+            contentEl.classList.add('admin-panel-content');
+            contentEl.innerHTML = `
+                <div class="ap-tabs">
+                    <div class="ap-tab active" data-tab="profile">Profile Text</div>
+                    <div class="ap-tab" data-tab="theme">Theme & Text</div>
+                    <div class="ap-tab" data-tab="quiz">Quiz Manager</div>
                 </div>
-            </div>
-            <div class="typing-container">
-                <div class="typing-text-display" id="typing-text-display">Click Start to begin!</div>
-                <input type="text" class="typing-input" id="typing-input" placeholder="Start typing..." disabled>
-            </div>
-            <div class="game-controls">
-                <button class="game-btn" id="typing-start-btn" onclick="startTypingGame()">Start</button>
-                <button class="game-btn" onclick="restartTypingGame()">Restart</button>
-            </div>
-        </div>
-    </div>
+                
+                <!-- Profile Editor Tab -->
+                <div class="ap-content active" id="ap-profile">
+                    <label for="ap-summary">Professional Summary</label> <textarea id="ap-summary"></textarea>
+                    <label for="ap-skills">Core Competencies</label> <textarea id="ap-skills"></textarea>
+                    <label for="ap-experience">Professional Experience</label> <textarea id="ap-experience"></textarea>
+                    <label for="ap-education">Education</label> <textarea id="ap-education"></textarea>
+                    <label for="ap-certs">Certifications</label> <textarea id="ap-certs"></textarea>
+                    <label for="ap-contact">Contact Info</label> <textarea id="ap-contact"></textarea>
+                    <button class="save" id="ap-save-profile">Save Profile</button>
+                    <div id="profile-save-status" style="color: var(--green); margin-top: 10px;"></div>
+                </div>
 
-    <!-- Success Message -->
-    <div class="success-message" id="success-message">Message sent successfully!</div>
+                <!-- Theme Editor Tab -->
+                <div class="ap-content" id="ap-theme">
+                    <label>Desktop Background URL</label>
+                    <input type="text" id="ap-theme-desktopBg">
+                    
+                    <label>Theme Colors</label>
+                    <div class="theme-grid">
+                        <label for="ap-theme-background">Terminal BG</label><input type="color" id="ap-theme-background">
+                        <label for="ap-theme-text">Main Text</label><input type="color" id="ap-theme-text">
+                        <label for="ap-theme-green">Green</label><input type="color" id="ap-theme-green">
+                        <label for="ap-theme-red">Red</label><input type="color" id="ap-theme-red">
+                        <label for="ap-theme-cyan">Cyan</label><input type="color" id="ap-theme-cyan">
+                        <label for="ap-theme-yellow">Yellow</label><input type="color" id="ap-theme-yellow">
+                        <label for="ap-theme-link">Link</label><input type="color" id="ap-theme-link">
+                    </div>
+                    
+                    <label>Terminal Text</label>
+                    <label for="ap-text-welcome">Welcome Message</label>
+                    <textarea id="ap-text-welcome" rows="5"></textarea>
+                    <label for="ap-text-prompt">Guest Prompt</label>
+                    <input type="text" id="ap-text-prompt">
+                    <label for="ap-text-adminPrompt">Admin Prompt</label>
+                    <input type="text" id="ap-text-adminPrompt">
+                    
+                    <button class="save" id="ap-save-theme">Save Theme & Text</button>
+                    <div id="theme-save-status" style="color: var(--green); margin-top: 10px;"></div>
+                </div>
+                
+                <!-- Quiz Manager Tab -->
+                <div class="ap-content" id="ap-quiz">
+                    <label for="ap-quiz-topic-select">Edit Quiz Topic:</label>
+                    <select id="ap-quiz-topic-select"></select>
+                    <button id="ap-quiz-new-topic" style="margin-left: 10px;">New Topic</button>
+                    <label for="ap-quiz-json-editor">Quiz Questions (JSON Array Format)</label>
+                    <textarea id="ap-quiz-json-editor"></textarea>
+                    <button class="save" id="ap-save-quiz">Save This Topic</button>
+                    <button class="save" id="ap-delete-quiz" style="background-color: var(--red); color: #fff; margin-left: 10px;">Delete This Topic</button>
+                    <div id="quiz-save-status" style="color: var(--green); margin-top: 10px;"></div>
+                </div>
+            `;
+            
+            const profileSaveStatus = contentEl.querySelector('#profile-save-status');
+            const themeSaveStatus = contentEl.querySelector('#theme-save-status');
+            const quizSaveStatus = contentEl.querySelector('#quiz-save-status');
 
-    <!-- Achievements -->
-    <div class="achievements" id="achievements"></div>
+            // --- Profile Tab Logic (SYNCED) ---
+            const fields = ['summary', 'skills', 'experience', 'education', 'certifications', 'contact'];
+            fields.forEach(f => {
+                contentEl.querySelector(`#ap-${f}`).value = userProfile[f];
+            });
+            contentEl.querySelector('#ap-save-profile').addEventListener('click', () => {
+                fields.forEach(f => {
+                    userProfile[f] = contentEl.querySelector(`#ap-${f}`).value;
+                });
+                localStorage.setItem('userProfile', JSON.stringify(userProfile));
+                profileSaveStatus.textContent = 'Profile Saved!';
+                setTimeout(() => profileSaveStatus.textContent = '', 2000);
+            });
+            
+            // --- Theme Tab Logic (SYNCED) ---
+            const themeFields = ['background', 'text', 'green', 'red', 'cyan', 'yellow', 'link'];
+            themeFields.forEach(f => {
+                contentEl.querySelector(`#ap-theme-${f}`).value = hybridSettings.theme[f];
+            });
+            contentEl.querySelector('#ap-theme-desktopBg').value = hybridSettings.theme.desktopBg;
+            contentEl.querySelector('#ap-text-welcome').value = hybridSettings.welcomeMessage;
+            contentEl.querySelector('#ap-text-prompt').value = hybridSettings.prompt;
+            contentEl.querySelector('#ap-text-adminPrompt').value = hybridSettings.adminPrompt;
+            
+            contentEl.querySelector('#ap-save-theme').addEventListener('click', () => {
+                themeFields.forEach(f => {
+                    hybridSettings.theme[f] = contentEl.querySelector(`#ap-theme-${f}`).value;
+                });
+                hybridSettings.theme.desktopBg = contentEl.querySelector('#ap-theme-desktopBg').value;
+                hybridSettings.welcomeMessage = contentEl.querySelector('#ap-text-welcome').value;
+                hybridSettings.prompt = contentEl.querySelector('#ap-text-prompt').value;
+                hybridSettings.adminPrompt = contentEl.querySelector('#ap-text-adminPrompt').value;
+                
+                localStorage.setItem('hybridSettings', JSON.stringify(hybridSettings));
+                applyTheme(hybridSettings); // Apply theme live
+                termUpdatePrompt(); // Update terminal prompt live
+                themeSaveStatus.textContent = 'Theme & Text Saved!';
+                setTimeout(() => themeSaveStatus.textContent = '', 2000);
+            });
 
-    <!-- Fun Mode Toggle -->
-    <button class="fun-mode-toggle" id="fun-mode-toggle">🎉 Fun Mode: OFF</button>
+            // --- Quiz Tab Logic (SYNCED) ---
+            const topicSelect = contentEl.querySelector('#ap-quiz-topic-select');
+            const jsonEditor = contentEl.querySelector('#ap-quiz-json-editor');
+            
+            function loadQuizTopics() {
+                topicSelect.innerHTML = '';
+                Object.keys(quizData).forEach(topic => {
+                    const opt = document.createElement('option');
+                    opt.value = topic;
+                    opt.textContent = topic;
+                    topicSelect.appendChild(opt);
+                });
+                loadEditorForTopic();
+            }
+            function loadEditorForTopic() {
+                const topic = topicSelect.value;
+                if (quizData[topic]) {
+                    jsonEditor.value = JSON.stringify(quizData[topic], null, 2);
+                } else {
+                    jsonEditor.value = '[]';
+                }
+            }
+            topicSelect.addEventListener('change', loadEditorForTopic);
+            
+            contentEl.querySelector('#ap-quiz-new-topic').addEventListener('click', () => {
+                const newTopic = prompt("Enter new topic name:");
+                if (newTopic && !quizData[newTopic]) {
+                    quizData[newTopic] = [];
+                    loadQuizTopics();
+                    topicSelect.value = newTopic;
+                    jsonEditor.value = '[]';
+                }
+            });
+            
+            contentEl.querySelector('#ap-save-quiz').addEventListener('click', () => {
+                const topic = topicSelect.value;
+                if (!topic) return;
+                try {
+                    const data = JSON.parse(jsonEditor.value);
+                    if (Array.isArray(data)) {
+                        quizData[topic] = data;
+                        localStorage.setItem('customQuizData', JSON.stringify(quizData));
+                        quizSaveStatus.textContent = 'Quiz topic saved!';
+                    } else { quizSaveStatus.textContent = 'Error: Input must be a valid JSON array.'; }
+                } catch (e) { quizSaveStatus.textContent = 'Error: Invalid JSON syntax. ' + e.message; }
+                setTimeout(() => quizSaveStatus.textContent = '', 2000);
+            });
 
-    <script src="app.js"></script>
+            contentEl.querySelector('#ap-delete-quiz').addEventListener('click', () => {
+                const topic = topicSelect.value;
+                if (!topic) return;
+                // Switched from confirm() to a simple prompt
+                const check = prompt(`Type DELETE to confirm deletion of "${topic}"`);
+                if (check === 'DELETE') {
+                    delete quizData[topic];
+                    localStorage.setItem('customQuizData', JSON.stringify(quizData));
+                    quizSaveStatus.textContent = 'Topic deleted.';
+                    loadQuizTopics();
+                } else {
+                    quizSaveStatus.textContent = 'Deletion cancelled.';
+                }
+                setTimeout(() => quizSaveStatus.textContent = '', 2000);
+            });
+
+            loadQuizTopics();
+            
+            // --- Tab Switching Logic ---
+            contentEl.querySelectorAll('.ap-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    contentEl.querySelectorAll('.ap-tab').forEach(t => t.classList.remove('active'));
+                    contentEl.querySelectorAll('.ap-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    contentEl.querySelector(`#${tab.dataset.tab}`).classList.add('active');
+                });
+            });
+        }
+        
+        function getGuiQuizContent(contentEl) {
+            contentEl.classList.add('quiz-content');
+            contentEl.innerHTML = `
+                <div class="quiz-topic-select-area">
+                    <label for="quiz-topic-select">Select a Quiz:</label>
+                    <select id="quiz-topic-select"></select>
+                </div>
+                <div class="quiz-question-area"> ... </div>
+                <div class="quiz-summary-area" style="display:none;"> ... </div>
+            `;
+            // Re-inflate the quiz content
+            contentEl.querySelector('.quiz-question-area').innerHTML = `
+                <div class="quiz-question-text"></div>
+                <div class="quiz-options-container"></div>
+                <div class="quiz-controls">
+                    <button id="quiz-submit-btn">Submit Answer</button>
+                    <button id="quiz-next-btn" style="display:none;">Next Question</button>
+                </div>
+                <div class="quiz-result"></div>
+            `;
+            contentEl.querySelector('.quiz-summary-area').innerHTML = `
+                <h2>Quiz Complete!</h2>
+                <p id="quiz-final-score"></p>
+                <button id="quiz-restart-btn">Take Another Quiz</button>
+            `;
+
+            // All quiz logic...
+            const topicSelect = contentEl.querySelector('#quiz-topic-select');
+            const questionArea = contentEl.querySelector('.quiz-question-area');
+            const questionText = contentEl.querySelector('.quiz-question-text');
+            const optionsContainer = contentEl.querySelector('.quiz-options-container');
+            const submitBtn = contentEl.querySelector('#quiz-submit-btn');
+            const nextBtn = contentEl.querySelector('#quiz-next-btn');
+            const resultEl = contentEl.querySelector('.quiz-result');
+            const summaryArea = contentEl.querySelector('.quiz-summary-area');
+            const finalScore = contentEl.querySelector('#quiz-final-score');
+            const restartBtn = contentEl.querySelector('#quiz-restart-btn');
+
+            let currentQuestions = [];
+            let qIndex = 0;
+            let score = 0;
+
+            function loadTopics() {
+                topicSelect.innerHTML = '<option value="">-- Select a topic --</option>';
+                Object.keys(quizData).forEach(topic => {
+                    if (quizData[topic].length > 0) {
+                        const opt = document.createElement('option');
+                        opt.value = topic;
+                        opt.textContent = topic;
+                        topicSelect.appendChild(opt);
+                    }
+                });
+            }
+            topicSelect.addEventListener('change', () => {
+                const topic = topicSelect.value;
+                if (topic) {
+                    currentQuestions = [...quizData[topic]];
+                    qIndex = 0;
+                    score = 0;
+                    questionArea.style.display = 'block';
+                    summaryArea.style.display = 'none';
+                    topicSelect.parentElement.style.display = 'none';
+                    loadQuestion();
+                }
+            });
+            function loadQuestion() {
+                resultEl.innerHTML = '';
+                submitBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+                const q = currentQuestions[qIndex];
+                questionText.textContent = q.q;
+                optionsContainer.innerHTML = '';
+                q.o.forEach((option, index) => {
+                    const optId = `q${qIndex}_opt${index}`;
+                    optionsContainer.innerHTML += `
+                        <label class="quiz-option" for="${optId}">
+                            <input type="radio" name="quiz-option" id="${optId}" value="${option[0]}">
+                            ${option}
+                        </label>
+                    `;
+                });
+            }
+            submitBtn.addEventListener('click', () => {
+                const selected = optionsContainer.querySelector('input[name="quiz-option"]:checked');
+                if (!selected) {
+                    resultEl.innerHTML = '<span style="color:var(--red)">Please select an answer.</span>';
+                    return;
+                }
+                const q = currentQuestions[qIndex];
+                if (selected.value.toUpperCase() === q.a.toUpperCase()) {
+                    resultEl.innerHTML = `<span style="color:var(--green)">Correct!</span>`;
+                    score++;
+                } else {
+                    resultEl.innerHTML = `<span style="color:var(--red)">Incorrect.</span> Correct answer: ${q.a}`;
+                }
+                resultEl.innerHTML += `<br><p><strong>Explanation:</strong> ${q.exp}</p>`;
+                submitBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-block';
+            });
+            nextBtn.addEventListener('click', () => {
+                qIndex++;
+                if (qIndex < currentQuestions.length) {
+                    loadQuestion();
+                } else {
+                    questionArea.style.display = 'none';
+                    summaryArea.style.display = 'block';
+                    finalScore.textContent = `Your final score is: ${score} / ${currentQuestions.length}`;
+                }
+            });
+            restartBtn.addEventListener('click', () => {
+                summaryArea.style.display = 'none';
+                topicSelect.parentElement.style.display = 'block';
+                topicSelect.value = '';
+            });
+            loadTopics();
+        }
+
+        // --- GUI Terminal App (Placeholder) ---
+        function getGuiTerminalContent(contentEl) {
+            contentEl.classList.add('terminal-app-placeholder');
+            contentEl.innerHTML = `
+                <h2 style="color: var(--cyan)">Terminal Access</h2>
+                <p>Full terminal access is provided as the base layer of this operating system.</p>
+                <p>To access the main shell, please click the "Exit to Terminal" button in the Start Menu.</p>
+                <p>(This GUI app is a placeholder)</p>
+            `;
+        }
+        
+        } // End of GUI script block
+    </script>
 </body>
 </html>
